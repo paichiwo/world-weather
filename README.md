@@ -1,4 +1,4 @@
-## **Weather App with PySimpleGUI**
+# **Weather App with PySimpleGUI**
 
 This is a simple Python app that displays the current weather information for a given location, using the [PySimpleGUI](https://pysimplegui.readthedocs.io/en/latest/) library for the GUI and the [Weatherstack](https://weatherstack.com/) API for the weather data.
 
