@@ -1,4 +1,4 @@
-## **Weather App with PySimpleGUI**
+# **Weather App with PySimpleGUI**
 
 This is a simple Python app that displays the current weather information for a given location, using the [PySimpleGUI](https://pysimplegui.readthedocs.io/en/latest/) library for the GUI and the [Weatherstack](https://weatherstack.com/) API for the weather data.
 
@@ -10,7 +10,6 @@ To run this app, you need to have Python 3.x and PySimpleGUI installed. You also
 
 You can install PySimpleGUI via pip:
 
-bashCopy code
 
 `pip install pysimplegui`
 
@@ -18,7 +17,6 @@ bashCopy code
 
 To run the app, open a terminal in the folder containing the code file, and type:
 
-bashCopy code
 
 `python weather_app.py`
 
