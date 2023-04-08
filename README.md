@@ -13,12 +13,16 @@ You can install PySimpleGUI via pip:
 
 `pip install pysimplegui`
 
+alternatively run this command in the app folder:
+
+`pip install -r requirements.txt`
+
 ## **How to Run**
 
 To run the app, open a terminal in the folder containing the code file, and type:
 
 
-`python weather_app.py`
+`python World_Weather.py`
 
 This should open the app window. You can enter a location (e.g., "London, UK") in the input field, and click the "Search" button to update the weather information.
 
