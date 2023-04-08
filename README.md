@@ -10,8 +10,8 @@ To run this app, you need to have Python 3.x and PySimpleGUI installed. You also
 
 You can install PySimpleGUI via pip:
 
-
-`pip install pysimplegui`
+`pip install pysimplegui`   
+`pip install requests`
 
 alternatively run this command in the app folder:
 
@@ -20,7 +20,6 @@ alternatively run this command in the app folder:
 ## **How to Run**
 
 To run the app, open a terminal in the folder containing the code file, and type:
-
 
 `python World_Weather.py`
 
