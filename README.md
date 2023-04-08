@@ -10,7 +10,6 @@ To run this app, you need to have Python 3.x and PySimpleGUI installed. You also
 
 You can install PySimpleGUI via pip:
 
-bashCopy code
 
 `pip install pysimplegui`
 
@@ -18,7 +17,6 @@ bashCopy code
 
 To run the app, open a terminal in the folder containing the code file, and type:
 
-bashCopy code
 
 `python weather_app.py`
 
