@@ -38,7 +38,7 @@ def convert_12_to_24(twelve):
 def get_weather_data(location):
 
     api_key = ""  # Your API key goes here
-    url = f"http://api.weatherstack.com/current?access_key={api_key}&query={location.replace(' ', '')}, language=PL"
+    url = f"http://api.weatherstack.com/current?access_key={api_key}&query={location.replace(' ', '')}, language=EN"
     response = requests.get(url)
     json_dict = response.json()
     # GET DATA FOR:
