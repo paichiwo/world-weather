@@ -8,12 +8,12 @@ The app displays a window with three columns: an image column with an icon repre
 
 To run this app, you need to have Python 3.x and PySimpleGUI installed. You also need to sign up for a free API key from [Weatherstack](https://weatherstack.com/) and paste it in the **api\_key** variable in the code.
 
-You can install PySimpleGUI via pip:
+You can install the required modules via pip:
 
 `pip install pysimplegui`   
 `pip install requests`
 
-alternatively run this command in the app folder:
+Alternatively run this command for automatic module installation:
 
 `pip install -r requirements.txt`
 
