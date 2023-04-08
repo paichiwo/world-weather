@@ -1,4 +1,7 @@
-# Weather APP with PySimpleGUI
+#!/usr/bin/env python3
+
+# World Weather GUI
+
 import PySimpleGUI as sg
 import requests
 
