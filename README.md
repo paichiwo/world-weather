@@ -35,4 +35,4 @@ This app is released under the [MIT License](https://opensource.org/licenses/MIT
 
 ## **Example Output**
 
-![](https://33333.cdn.cke-cs.com/kSW7V9NHUXugvhoQeFaf/images/3a0f3730416b8a0155368619938f09f0c6ad393af571ce6e.png)
+![](screenshot.png)
