@@ -29,10 +29,25 @@ This should open the app window. You can enter a location (e.g., "London, UK") i
 
 You can customize the app by changing the images in the **weather\_icons** dictionary to match your own icons, or by modifying the GUI layout in the **create\_window** function. You can also change the theme of the app by passing a different theme name to the **sg.theme** function in the **create\_window** function. The available theme names are listed in the [PySimpleGUI documentation](https://pysimplegui.readthedocs.io/en/latest/#themes).
 
+## **Contributing**
+
+Contributions are always welcome and appreciated! If you find any issues or have suggestions for improvements, please feel free to open an issue or pull request on the GitHub repository.
+
+To contribute, please follow these steps:
+
+1.  Fork the repository to your own GitHub account.
+2.  Clone the repository to your local machine.
+3.  Create a new branch for your changes.
+4.  Make your changes and commit them with clear commit messages.
+5.  Push your changes to your forked repository.
+6.  Open a pull request to the main repository.
+
+Please ensure that your code is well-documented, tested, and follows the existing code style and guidelines. By contributing, you agree to release your code under the same MIT license as the original code.
+
 ## **License**
 
 This app is released under the [MIT License](https://opensource.org/licenses/MIT). Feel free to use, modify, and distribute it as you like.
 
-## **Example Output**
+## **Examples**
 
 ![](screenshot.png)
