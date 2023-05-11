@@ -7,7 +7,7 @@ from datetime import datetime
 
 def format_date(date):
     date_object = datetime.strptime(date, "%Y-%m-%d")
-    return date_object.strftime("%d/%m/%Y")
+    return date_object.strftime("%d/%m/%y")
 
 
 inp = input("Enter location:")
@@ -19,13 +19,16 @@ url = f"http://api.weatherapi.com/v1/forecast.json?key={api_key}&q={inp}&days=5&
 # querystring = {"q": f"{inp}"}
 
 response = requests.get(url)
-
 data = response.json()
-print(data)
-print(data['current']['temp_c'])
-print(data['current']['condition']['icon'][2:])
-print(data['current']['condition']['text'])
 
+all_data = data
+
+# Current data
+current_temperature = data['current']['temp_c']
+current_weather_image = data['current']['condition']['icon'][2:]
+current_condition = data['current']['condition']['text']
+
+# Forecast data
 forecast = data['forecast']['forecastday']
 for date_entry in forecast:
     forecast_date = date_entry['date']
