@@ -1,5 +1,6 @@
 import requests
 from datetime import datetime
+import geocoder
 
 # Wygrzeb resztę potrzebnych do aplikacji danych
 # Przypisz do zmiennych
@@ -10,9 +11,15 @@ def format_date(date):
     return date_object.strftime("%d/%m/%y")
 
 
-inp = input("Enter location:")
+input = input("Enter location or press (l) for your location: ")
+if input == "l":
+    geo = geocoder.ip('me')
+    location = f"{geo.latlng[0]}, {geo.latlng[1]}"
+else:
+    location = input
+
 api_key = "58426b1c8989446e9b7142031230103"
-url = f"http://api.weatherapi.com/v1/forecast.json?key={api_key}&q={inp}&days=5&aqi=no&alerts=no"
+url = f"http://api.weatherapi.com/v1/forecast.json?key={api_key}&q={location}&days=5&aqi=no&alerts=no"
 
 # can be post-code, location name(, optional county, country)
 # ip address, any language
@@ -33,3 +40,8 @@ forecast = data['forecast']['forecastday']
 for date_entry in forecast:
     forecast_date = date_entry['date']
     print(format_date(forecast_date))
+
+print(all_data)
+print(current_temperature)
+print(current_condition)
+print(current_weather_image)
