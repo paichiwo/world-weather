@@ -2,12 +2,13 @@ import requests
 from datetime import datetime
 import geocoder
 import calendar
+import json
 from tkinter import *
 from tkinter import ttk, messagebox
 import tkinter as tk
 
 # Paste you API key from https://weatherapi.com/ here:
-api_key = ""
+api_key = "58426b1c8989446e9b7142031230103"
 
 # info for precipitation:
 # - Light rain gives up to 2–4 mm (0.07–0.15 in)
@@ -25,15 +26,16 @@ def format_date(date):
     return f"{week_day[:3]}, {date_object.day} {month_name}"
 
 
-# root = Tk()
-# root.title("World Weather by paichiwo")
-# root.geometry("900x500+300+200")
-# root.resizable(False, False)
-#
-# # Search Box
-# search_image =
-#
-# root.mainloop()
+def country_code(country_name):
+    """ Change full country name to its abbreviation """
+    with open("country_code.json") as file:
+        json_data = json.load(file)
+
+    for name in json_data:
+        if name["Name"] == country_name:
+            return name["Code"]
+
+
 
 user_input = input("Enter location or press (l) for your location: ")
 if user_input == "l":
@@ -43,16 +45,16 @@ else:
     location = user_input
 
 
-url = f"http://api.weatherapi.com/v1/forecast.json?key={api_key}&q={location}&days=5&aqi=no&alerts=no"
+url = f"http://api.weatherapi.com/v1/forecast.json?key={api_key}&q={location}&aqi=no&alerts=no"
 response = requests.get(url)
 data = response.json()
 
 # Info data
 city = data['location']['name']
 region = data['location']['region']
-country = data['location']['country']
+country = country_code(data['location']['country'])
 local_time = format_date(data['location']['localtime'][:-6])
-
+print(country)
 # Current data
 current_temp = data['current']['temp_c']
 current_condition = data['current']['condition']['text']
