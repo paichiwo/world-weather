@@ -47,10 +47,9 @@ def get_weather():
 
     # Info data
     city = data['location']['name']
-    region = data['location']['region']
     country = country_code(data['location']['country'])
     local_time = format_date(data['location']['localtime'][:-6])
-    print(country)
+
     # Current data
     current_temp = data['current']['temp_c']
     current_condition = data['current']['condition']['text']
@@ -80,36 +79,42 @@ def get_weather():
             "condition": forecast_condition,
         })
 
-    temp.config(text=(current_temp,"`"))
+    city_info.config(text=f"{city}, {country}", justify="center", width=22)
 
+    temp.config(text=f"{current_temp} °")
+
+
+# colors
+l_blue = "#1581ef"
+d_blue = "#1167f2"
 
 # search box
 Search_image = PhotoImage(file="img/current_window.png")
 myimage = Label(image=Search_image, bg="black")
 myimage.place(x=22, y=20)
-
+# input field
 textfield = tk.Entry(root, justify="center",
-                     width=23,
-                     font=("Noto Sans", 13),
-                     bg="#1196c1", border=0, fg="#FFFFFF")
-textfield.place(x=55, y=62)
+                     width=25,
+                     font=("Noto Sans", 11, "bold"),
+                     bg=d_blue, border=0, fg="#FFFFFF")
+textfield.place(x=60, y=67, height=22)
 textfield.focus()
-
+# search icon
 Search_icon = PhotoImage(file="img/magnifying_glass.png")
-myimage_icon = Button(image=Search_icon, borderwidth=0, cursor="hand2", bg="#1196c1", command=get_weather)
-myimage_icon.place(x=270, y=63)
-
+myimage_icon = Button(image=Search_icon, borderwidth=0, cursor="hand2", bg=d_blue, command=get_weather)
+myimage_icon.place(x=268, y=65)
 
 # Labels
 # label1 = Label(root, text="WIND", font=("Noto Sans", 12), fg="#FFFFFF", bg="#1AB5EF")
 # label1.place(x=120, y=400)
 
+city_info = Label(text="", font=("Noto Sans", 12), bg=l_blue, fg="white")
+city_info.place(x=65, y=97)
 
 temp = Label(font=("Noto Sans", 60, "bold"), fg="#EE666D")
 temp.place(x=400, y=150)
 condition = Label(font=("Noto Sans", 12, "bold"))
 condition.place(x=400, y=250)
-
 
 feels = Label(text="...", font=("Noto Sans", 16, "bold"), bg="#1AB5EF")
 feels.place(x=280, y=430)
@@ -134,4 +139,3 @@ pressure = Label(text="...", font=("Noto Sans", 16, "bold"), bg="#1AB5EF")
 pressure.place(x=120, y=430)
 
 root.mainloop()
-
