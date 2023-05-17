@@ -4,6 +4,7 @@ import tkinter as tk
 import requests
 import calendar
 import json
+from weather_icons import icons
 
 # root window
 root = Tk()
@@ -51,6 +52,7 @@ def get_weather():
     local_time = format_date(data['location']['localtime'][:-6])
 
     # Current data
+    code = data['current']['condition']['code']
     current_temp = data['current']['temp_c']
     current_condition = data['current']['condition']['text']
     current_feelslike = data['current']['feelslike_c']
@@ -80,6 +82,7 @@ def get_weather():
         })
 
     city_info.config(text=f"{city}, {country}", justify="center", width=22)
+    weather_icon.config(file=icons[code])
 
     temp.config(text=f"{current_temp} °")
 
@@ -93,10 +96,7 @@ Search_image = PhotoImage(file="img/current_window.png")
 myimage = Label(image=Search_image, bg="black")
 myimage.place(x=22, y=20)
 # input field
-textfield = tk.Entry(root, justify="center",
-                     width=25,
-                     font=("Noto Sans", 11, "bold"),
-                     bg=d_blue, border=0, fg="#FFFFFF")
+textfield = tk.Entry(root, justify="center",width=25,font=("Noto Sans", 11, "bold"),bg=d_blue, border=0, fg="white")
 textfield.place(x=60, y=67, height=22)
 textfield.focus()
 # search icon
@@ -108,11 +108,17 @@ myimage_icon.place(x=268, y=65)
 # label1 = Label(root, text="WIND", font=("Noto Sans", 12), fg="#FFFFFF", bg="#1AB5EF")
 # label1.place(x=120, y=400)
 
+# my data
 city_info = Label(text="", font=("Noto Sans", 12), bg=l_blue, fg="white")
 city_info.place(x=65, y=97)
 
-temp = Label(font=("Noto Sans", 60, "bold"), fg="#EE666D")
+weather_icon = PhotoImage(file='img/dummy.png')
+weather_label = Label(root, image=weather_icon, bg=l_blue)
+weather_label.place(x=105, y=130)
+
+temp = Label(font=("Noto Sans", 60, "bold"), fg="white")
 temp.place(x=400, y=150)
+
 condition = Label(font=("Noto Sans", 12, "bold"))
 condition.place(x=400, y=250)
 
