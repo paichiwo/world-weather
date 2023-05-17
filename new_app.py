@@ -53,7 +53,7 @@ def get_weather():
 
     # Current data
     code = data['current']['condition']['code']
-    current_temp = data['current']['temp_c']
+    current_temp = str(int(data['current']['temp_c']))
     current_condition = data['current']['condition']['text']
     current_feelslike = data['current']['feelslike_c']
     current_wind_speed = data['current']['wind_kph']
@@ -83,8 +83,7 @@ def get_weather():
 
     city_info.config(text=f"{city}, {country}", justify="center", width=22)
     weather_icon.config(file=icons[code])
-
-    temp.config(text=f"{current_temp} °")
+    temp.config(text=current_temp+"°", justify='center', bg=l_blue, fg='white', width=2)
 
 
 # colors
@@ -93,16 +92,16 @@ d_blue = "#1167f2"
 
 # search box
 Search_image = PhotoImage(file="img/current_window.png")
-myimage = Label(image=Search_image, bg="black")
-myimage.place(x=22, y=20)
+search_label = Label(image=Search_image, bg="black")
+search_label.place(x=22, y=20)
 # input field
 textfield = tk.Entry(root, justify="center",width=25,font=("Noto Sans", 11, "bold"),bg=d_blue, border=0, fg="white")
 textfield.place(x=60, y=67, height=22)
 textfield.focus()
 # search icon
 Search_icon = PhotoImage(file="img/magnifying_glass.png")
-myimage_icon = Button(image=Search_icon, borderwidth=0, cursor="hand2", bg=d_blue, command=get_weather)
-myimage_icon.place(x=268, y=65)
+search_button = Button(image=Search_icon, borderwidth=0, cursor="hand2", bg=d_blue, command=get_weather)
+search_button.place(x=268, y=65)
 
 # Labels
 # label1 = Label(root, text="WIND", font=("Noto Sans", 12), fg="#FFFFFF", bg="#1AB5EF")
@@ -114,34 +113,14 @@ city_info.place(x=65, y=97)
 
 weather_icon = PhotoImage(file='img/dummy.png')
 weather_label = Label(root, image=weather_icon, bg=l_blue)
-weather_label.place(x=105, y=130)
+weather_label.place(x=95, y=130)
 
-temp = Label(font=("Noto Sans", 60, "bold"), fg="white")
-temp.place(x=400, y=150)
+temp = Label(text="", font=("Noto Sans", 85, "bold"), bg=l_blue, fg="white")
+temp.place(x=120, y=280, height=111)
+
 
 condition = Label(font=("Noto Sans", 12, "bold"))
 condition.place(x=400, y=250)
 
-feels = Label(text="...", font=("Noto Sans", 16, "bold"), bg="#1AB5EF")
-feels.place(x=280, y=430)
-wind = Label(text="...", font=("Noto Sans", 16, "bold"), bg="#1AB5EF")
-wind.place(x=450, y=430)
-humidity = Label(text="...", font=("Noto Sans", 16, "bold"), bg="#1AB5EF")
-humidity.place(x=670, y=430)
-precip = Label(text="...", font=("Noto Sans", 16, "bold"), bg="#1AB5EF")
-precip.place(x=120, y=430)
-pressure = Label(text="...", font=("Noto Sans", 16, "bold"), bg="#1AB5EF")
-pressure.place(x=120, y=430)
-
-feels = Label(text="...", font=("Noto Sans", 16, "bold"), bg="#1AB5EF")
-feels.place(x=280, y=430)
-wind = Label(text="...", font=("Noto Sans", 16, "bold"), bg="#1AB5EF")
-wind.place(x=450, y=430)
-humidity = Label(text="...", font=("Noto Sans", 16, "bold"), bg="#1AB5EF")
-humidity.place(x=670, y=430)
-precip = Label(text="...", font=("Noto Sans", 16, "bold"), bg="#1AB5EF")
-precip.place(x=120, y=430)
-pressure = Label(text="...", font=("Noto Sans", 16, "bold"), bg="#1AB5EF")
-pressure.place(x=120, y=430)
 
 root.mainloop()
