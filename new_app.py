@@ -39,11 +39,10 @@ def country_code(country_name):
 
 
 def get_weather():
-    api_key = 'your_api_key'
+    api_key = '58426b1c8989446e9b7142031230103'
     location = textfield.get()
     url = f'http://api.weatherapi.com/v1/forecast.json?key={api_key}&q={location}&aqi=no&alerts=no'
-    response = requests.get(url)
-    data = response.json()
+    data = requests.get(url).json()
 
     # Info data
     city = data['location']['name']
@@ -90,7 +89,7 @@ def get_weather():
     else:
         temp_symbol.config(text='°', justify='center', bg=l_blue, fg='white')
         temp_symbol.place(x=240, y=290)
-
+    condition.config(text=current_condition, justify='center', bg=l_blue, fg='white')
 
 # Colors
 l_blue = '#1581ef'
@@ -127,6 +126,9 @@ temp = Label(text='', font=('Noto Sans', 85, 'bold'), bg=l_blue, fg='white')
 temp.place(x=107, y=280, height=111)
 temp_symbol = Label(text='', font=('Noto Sans', 20, 'bold'), height=1, bg=l_blue, fg='white')
 temp_symbol.place(x=206, y=290, width=15)
+
+condition = Label(text='', font=('Noto Sans', 11), bg=d_blue, fg='white', width=27)
+condition.place(x=53, y=390, height=30)
 
 
 root.mainloop()
