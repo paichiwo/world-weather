@@ -53,11 +53,11 @@ def get_weather():
     code = data['current']['condition']['code']
     current_temp = str(int(data['current']['temp_c']))
     current_condition = data['current']['condition']['text']
-    current_feelslike = data['current']['feelslike_c']
-    current_wind_speed = data['current']['wind_kph']
+    current_feelslike = str(int(data['current']['feelslike_c']))
+    current_wind_speed = str(int(data['current']['wind_kph']))
     current_humidity = data['current']['humidity']
-    current_precipitation = data['current']['precip_mm']  # mm, instead of chance of rain %
-    current_pressure = data['current']['pressure_mb']
+    current_precipitation = str(int(data['current']['precip_mm']))  # mm, instead of chance of rain %
+    current_pressure = str(int(data['current']['pressure_mb']))
     current_is_day = data['current']['is_day']
 
     # Forecast data
@@ -90,6 +90,12 @@ def get_weather():
         temp_symbol.config(text='°', justify='center', bg=l_blue, fg='white')
         temp_symbol.place(x=240, y=290)
     condition.config(text=current_condition, justify='center', bg=l_blue, fg='white')
+    date.config(text=local_time, justify='center', bg=l_blue, fg='white')
+    feelslike.config(text=f'{current_feelslike}°', justify='center', bg=l_blue, fg='white')
+    wind.config(text=f'{current_wind_speed} km/h', justify='center', bg=l_blue, fg='white')
+    humidity.config(text=f'{current_humidity}%', justify='center', bg=l_blue, fg='white')
+    precipitation.config(text=f'{current_precipitation} mm', justify='center', bg=l_blue, fg='white')
+    pressure.config(text=f'{current_pressure} hPa', justify='center', bg=l_blue, fg='white')
 
 # Colors
 l_blue = '#1581ef'
@@ -119,16 +125,34 @@ city_info.place(x=65, y=97)
 # Weather icon label
 weather_icon = PhotoImage(file='img/dummy.png')
 weather_label = Label(root, image=weather_icon, bg=l_blue)
-weather_label.place(x=95, y=130)
+weather_label.place(x=93, y=130)
 
 # Temperature with ° symbol
 temp = Label(text='', font=('Noto Sans', 85, 'bold'), bg=l_blue, fg='white')
-temp.place(x=107, y=280, height=111)
+temp.place(x=104, y=280, height=111)
 temp_symbol = Label(text='', font=('Noto Sans', 20, 'bold'), height=1, bg=l_blue, fg='white')
 temp_symbol.place(x=206, y=290, width=15)
 
-condition = Label(text='', font=('Noto Sans', 11), bg=d_blue, fg='white', width=27)
+condition = Label(text='', font=('Noto Sans', 11), bg=l_blue, fg='white', width=27)
 condition.place(x=53, y=390, height=30)
 
+date = Label(text='', font=('Noto Sans', 8), bg=l_blue, fg='white', width=30)
+date.place(x=69, y=418, height=15)
+
+# Bottom row
+feelslike = Label(text='', font=('Noto Sans', 8, 'bold'), bg=l_blue, fg='white', width=3)
+feelslike.place(x=62, y=487, height=15)
+
+wind = Label(text='', font=('Noto Sans', 8, 'bold'), bg=l_blue, fg='white', width=7)
+wind.place(x=91, y=487, height=15)
+
+humidity = Label(text='', font=('Noto Sans', 8, 'bold'), bg=l_blue, fg='white', width=4)
+humidity.place(x=152, y=487, height=15)
+
+precipitation = Label(text='', font=('Noto Sans', 8, 'bold'), bg=l_blue, fg='white', width=4)
+precipitation.place(x=197, y=487, height=15)
+
+pressure = Label(text='', font=('Noto Sans', 8, 'bold'), bg=l_blue, fg='white', width=7)
+pressure.place(x=242, y=487, height=15)
 
 root.mainloop()
