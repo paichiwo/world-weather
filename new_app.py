@@ -8,10 +8,10 @@ from weather_icons import icons
 
 # Create the window and set the basics
 root = Tk()
-root.title("Title")
-root.geometry("350x680+300+200")
+root.title('World Weather by paichiwo')
+root.geometry('350x680+300+200')
 root.resizable(False, False)
-root.config(bg="black")
+root.config(bg='black')
 
 # info for precipitation:
 # - Light rain gives up to 2–4 mm (0.07–0.15 in)
@@ -22,26 +22,26 @@ root.config(bg="black")
 
 def format_date(date):
     """ Format date to weekday, day month_name (Monday, 14 May) """
-    date_object = datetime.strptime(date, "%Y-%m-%d")
+    date_object = datetime.strptime(date, '%Y-%m-%d')
     week_day = calendar.day_name[date_object.weekday()]
     month = date_object.month
     month_name = calendar.month_name[month]
-    return f"{week_day[:3]}, {date_object.day} {month_name}"
+    return f'{week_day[:3]}, {date_object.day} {month_name}'
 
 
 def country_code(country_name):
     """ Change full country name to its abbreviation """
-    with open("country_code.json") as file:
+    with open('country_code.json') as file:
         json_data = json.load(file)
     for name in json_data:
-        if name["Name"] == country_name:
-            return name["Code"]
+        if name['Name'] == country_name:
+            return name['Code']
 
 
 def get_weather():
-    api_key = "58426b1c8989446e9b7142031230103"
+    api_key = 'your_api_key'
     location = textfield.get()
-    url = f"http://api.weatherapi.com/v1/forecast.json?key={api_key}&q={location}&aqi=no&alerts=no"
+    url = f'http://api.weatherapi.com/v1/forecast.json?key={api_key}&q={location}&aqi=no&alerts=no'
     response = requests.get(url)
     data = response.json()
 
@@ -73,48 +73,48 @@ def get_weather():
         forecast_condition = date_entry['day']['condition']['text']
 
         forecast_data.append({
-            "date": forecast_date,
-            "avg_temp": forecast_avg_temp,
-            "max_wind": forecast_max_wind,
-            "avg_humidity": forecast_avg_humidity,
-            "condition": forecast_condition,
+            'date': forecast_date,
+            'avg_temp': forecast_avg_temp,
+            'max_wind': forecast_max_wind,
+            'avg_humidity': forecast_avg_humidity,
+            'condition': forecast_condition,
         })
 
     # Update labels with data from the API
-    city_info.config(text=f"{city}, {country}", justify="center", width=22)
+    city_info.config(text=f'{city}, {country}', justify='center', width=22)
     weather_icon.config(file=icons[code])
     temp.config(text=current_temp, justify='center', bg=l_blue, fg='white', width=2)
     if len(current_temp) == 1:
-        temp_symbol.config(text="°", justify='center', bg=l_blue, fg='white')
+        temp_symbol.config(text='°', justify='center', bg=l_blue, fg='white')
         temp_symbol.place(x=206, y=290)
     else:
-        temp_symbol.config(text="°", justify='center', bg=l_blue, fg='white')
+        temp_symbol.config(text='°', justify='center', bg=l_blue, fg='white')
         temp_symbol.place(x=240, y=290)
 
 
 # Colors
-l_blue = "#1581ef"
-d_blue = "#1167f2"
+l_blue = '#1581ef'
+d_blue = '#1167f2'
 
 # ------------------- SEARCH BOX ---------------------
 # Search box image
-Search_image = PhotoImage(file="img/current_window.png")
-search_label = Label(image=Search_image, bg="black")
+Search_image = PhotoImage(file='img/current_window.png')
+search_label = Label(image=Search_image, bg='black')
 search_label.place(x=22, y=20)
 
 # Input field
-textfield = tk.Entry(root, justify="center", width=25, font=("Noto Sans", 11, "bold"), bg=d_blue, border=0, fg="white")
+textfield = tk.Entry(root, justify='center', width=25, font=('Noto Sans', 11, 'bold'), bg=d_blue, border=0, fg='white')
 textfield.place(x=60, y=67, height=22)
 textfield.focus()
 
 # Search icon
-Search_icon = PhotoImage(file="img/magnifying_glass.png")
-search_button = Button(image=Search_icon, borderwidth=0, cursor="hand2", bg=d_blue, command=get_weather)
+Search_icon = PhotoImage(file='img/magnifying_glass.png')
+search_button = Button(image=Search_icon, borderwidth=0, cursor='hand2', bg=d_blue, command=get_weather)
 search_button.place(x=268, y=65)
 
 # ------ CURRENT WEATHER LABELS (PLACEHOLDERS) -------
 # City information label
-city_info = Label(text="", font=("Noto Sans", 12), bg=l_blue, fg="white")
+city_info = Label(text='', font=('Noto Sans', 12), bg=l_blue, fg='white')
 city_info.place(x=65, y=97)
 
 # Weather icon label
@@ -123,9 +123,9 @@ weather_label = Label(root, image=weather_icon, bg=l_blue)
 weather_label.place(x=95, y=130)
 
 # Temperature with ° symbol
-temp = Label(text="", font=("Noto Sans", 85, "bold"), bg=l_blue, fg="white")
+temp = Label(text='', font=('Noto Sans', 85, 'bold'), bg=l_blue, fg='white')
 temp.place(x=107, y=280, height=111)
-temp_symbol = Label(text="", font=("Noto Sans", 20, "bold"), height=1, bg=l_blue, fg="white")
+temp_symbol = Label(text='', font=('Noto Sans', 20, 'bold'), height=1, bg=l_blue, fg='white')
 temp_symbol.place(x=206, y=290, width=15)
 
 
