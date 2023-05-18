@@ -6,7 +6,7 @@ import calendar
 import json
 from weather_icons import icons
 
-# root window
+# Create the window and set the basics
 root = Tk()
 root.title("Title")
 root.geometry("350x680+300+200")
@@ -33,7 +33,6 @@ def country_code(country_name):
     """ Change full country name to its abbreviation """
     with open("country_code.json") as file:
         json_data = json.load(file)
-
     for name in json_data:
         if name["Name"] == country_name:
             return name["Code"]
@@ -81,46 +80,53 @@ def get_weather():
             "condition": forecast_condition,
         })
 
+    # Update labels with data from the API
     city_info.config(text=f"{city}, {country}", justify="center", width=22)
     weather_icon.config(file=icons[code])
-    temp.config(text=current_temp+"°", justify='center', bg=l_blue, fg='white', width=2)
+    temp.config(text=current_temp, justify='center', bg=l_blue, fg='white', width=2)
+    if len(current_temp) == 1:
+        temp_symbol.config(text="°", justify='center', bg=l_blue, fg='white')
+        temp_symbol.place(x=206, y=290)
+    else:
+        temp_symbol.config(text="°", justify='center', bg=l_blue, fg='white')
+        temp_symbol.place(x=240, y=290)
 
 
-# colors
+# Colors
 l_blue = "#1581ef"
 d_blue = "#1167f2"
 
-# search box
+# ------------------- SEARCH BOX ---------------------
+# Search box image
 Search_image = PhotoImage(file="img/current_window.png")
 search_label = Label(image=Search_image, bg="black")
 search_label.place(x=22, y=20)
-# input field
-textfield = tk.Entry(root, justify="center",width=25,font=("Noto Sans", 11, "bold"),bg=d_blue, border=0, fg="white")
+
+# Input field
+textfield = tk.Entry(root, justify="center", width=25, font=("Noto Sans", 11, "bold"), bg=d_blue, border=0, fg="white")
 textfield.place(x=60, y=67, height=22)
 textfield.focus()
-# search icon
+
+# Search icon
 Search_icon = PhotoImage(file="img/magnifying_glass.png")
 search_button = Button(image=Search_icon, borderwidth=0, cursor="hand2", bg=d_blue, command=get_weather)
 search_button.place(x=268, y=65)
 
-# Labels
-# label1 = Label(root, text="WIND", font=("Noto Sans", 12), fg="#FFFFFF", bg="#1AB5EF")
-# label1.place(x=120, y=400)
-
-# my data
+# ------ CURRENT WEATHER LABELS (PLACEHOLDERS) -------
+# City information label
 city_info = Label(text="", font=("Noto Sans", 12), bg=l_blue, fg="white")
 city_info.place(x=65, y=97)
 
+# Weather icon label
 weather_icon = PhotoImage(file='img/dummy.png')
 weather_label = Label(root, image=weather_icon, bg=l_blue)
 weather_label.place(x=95, y=130)
 
+# Temperature with ° symbol
 temp = Label(text="", font=("Noto Sans", 85, "bold"), bg=l_blue, fg="white")
-temp.place(x=120, y=280, height=111)
-
-
-condition = Label(font=("Noto Sans", 12, "bold"))
-condition.place(x=400, y=250)
+temp.place(x=107, y=280, height=111)
+temp_symbol = Label(text="", font=("Noto Sans", 20, "bold"), height=1, bg=l_blue, fg="white")
+temp_symbol.place(x=206, y=290, width=15)
 
 
 root.mainloop()
