@@ -13,11 +13,9 @@ root.geometry('350x680+300+200')
 root.resizable(False, False)
 root.config(bg='black')
 
-# info for precipitation:
-# - Light rain gives up to 2–4 mm (0.07–0.15 in)
-# - Moderate rain gives 5–6 mm (0.19–0.23 in)
-# - Rain or strong rain gives up about 15–20 mm (0.59–0.78 in)
-# - Rainfall gives more than 30 mm (1.18 in)
+# Colors
+l_blue = '#1581ef'
+d_blue = '#1167f2'
 
 
 def format_date(date):
@@ -109,10 +107,6 @@ def get_weather():
     pressure.config(text=f'{current_pressure} hPa', justify='center', bg=l_blue, fg='white')
 
 
-# Colors
-l_blue = '#1581ef'
-d_blue = '#1167f2'
-
 # ------------------- SEARCH BOX ---------------------
 # Search box image
 Search_image = PhotoImage(file='img/current_window.png')
@@ -123,11 +117,13 @@ search_label.place(x=22, y=20)
 textfield = tk.Entry(root, justify='center', width=25, font=('Noto Sans', 11, 'bold'), bg=d_blue, border=0, fg='white')
 textfield.place(x=60, y=67, height=22)
 textfield.focus()
+textfield.bind('<Return>', lambda event=None: search_button.invoke())
 
 # Search icon
 Search_icon = PhotoImage(file='img/magnifying_glass.png')
 search_button = Button(image=Search_icon, activebackground=l_blue, borderwidth=0,
                        cursor='hand2', bg=d_blue, command=get_weather)
+
 search_button.place(x=268, y=65)
 
 # ------ CURRENT WEATHER LABELS (PLACEHOLDERS) -------
@@ -154,18 +150,18 @@ date_info.place(x=69, y=418, height=15)
 
 # Bottom row
 feelslike = Label(text='', font=('Noto Sans', 8, 'bold'), bg=l_blue, fg='white', width=3)
-feelslike.place(x=62, y=487, height=15)
+feelslike.place(x=63, y=487, height=15)
 
 wind = Label(text='', font=('Noto Sans', 8, 'bold'), bg=l_blue, fg='white', width=7)
-wind.place(x=91, y=487, height=15)
+wind.place(x=98, y=487, height=15)
 
 humidity = Label(text='', font=('Noto Sans', 8, 'bold'), bg=l_blue, fg='white', width=4)
-humidity.place(x=152, y=487, height=15)
+humidity.place(x=162, y=487, height=15)
 
-precipitation = Label(text='', font=('Noto Sans', 8, 'bold'), bg=l_blue, fg='white', width=4)
-precipitation.place(x=197, y=487, height=15)
+precipitation = Label(text='', font=('Noto Sans', 8, 'bold'), bg=l_blue, fg='white', width=5)
+precipitation.place(x=204, y=487, height=15)
 
-pressure = Label(text='', font=('Noto Sans', 8, 'bold'), bg=l_blue, fg='white', width=7)
-pressure.place(x=242, y=487, height=15)
+pressure = Label(text='', font=('Noto Sans', 8, 'bold'), bg=lblue, fg='white', width=7)
+pressure.place(x=250, y=487, height=15)
 
 root.mainloop()
