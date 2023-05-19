@@ -37,74 +37,78 @@ def country_code(country_name):
 
 
 def get_weather():
-    api_key = '58426b1c8989446e9b7142031230103'
+    api_key = ''
     location = textfield.get()
     url = f'http://api.weatherapi.com/v1/forecast.json?key={api_key}&q={location}&days=3&aqi=no&alerts=no'
-    data = requests.get(url).json()
+    try:
+        data = requests.get(url).json()
 
-    # Info data
-    city = data['location']['name']
-    country = country_code(data['location']['country'])
-    local_time = format_date(data['location']['localtime'][:-6])
+        # Info data
+        city = data['location']['name']
+        country = country_code(data['location']['country'])
+        local_time = format_date(data['location']['localtime'][:-6])
 
-    # Current data
-    code = data['current']['condition']['code']
-    current_temp = str(int(data['current']['temp_c']))
-    current_condition = data['current']['condition']['text']
-    current_feelslike = str(int(data['current']['feelslike_c']))
-    current_wind_speed = str(int(data['current']['wind_kph']))
-    current_humidity = data['current']['humidity']
-    current_precipitation = str(int(data['current']['precip_mm']))  # mm, instead of chance of rain %
-    current_pressure = str(int(data['current']['pressure_mb']))
-    current_is_day = data['current']['is_day']
+        # Current data
+        code = data['current']['condition']['code']
+        current_temp = str(int(data['current']['temp_c']))
+        current_condition = data['current']['condition']['text']
+        current_feelslike = str(int(data['current']['feelslike_c']))
+        current_wind_speed = str(int(data['current']['wind_kph']))
+        current_humidity = data['current']['humidity']
+        current_precipitation = str(int(data['current']['precip_mm']))  # mm, instead of chance of rain %
+        current_pressure = str(int(data['current']['pressure_mb']))
+        current_is_day = data['current']['is_day']
 
-    # Forecast data
-    forecast = data['forecast']['forecastday']
-    forecast_data = []
+        # Forecast data
+        forecast = data['forecast']['forecastday']
+        forecast_data = []
 
-    for date_entry in forecast:
-        forecast_date = format_date(date_entry['date'])
-        forecast_avg_temp = date_entry['day']['avgtemp_c']
-        forecast_max_wind = date_entry['day']['maxwind_kph']
-        forecast_avg_humidity = date_entry['day']['avghumidity']
-        forecast_condition = date_entry['day']['condition']['text']
-        forecast_code = date_entry['day']['condition']['code']
+        for date_entry in forecast:
+            forecast_date = format_date(date_entry['date'])
+            forecast_avg_temp = date_entry['day']['avgtemp_c']
+            forecast_max_wind = date_entry['day']['maxwind_kph']
+            forecast_avg_humidity = date_entry['day']['avghumidity']
+            forecast_condition = date_entry['day']['condition']['text']
+            forecast_code = date_entry['day']['condition']['code']
 
-        forecast_data.append({
-            'date': forecast_date,
-            'avg_temp': forecast_avg_temp,
-            'max_wind': forecast_max_wind,
-            'avg_humidity': forecast_avg_humidity,
-            'condition': forecast_condition,
-            'code': forecast_code
-        })
-    print(forecast_data)
+            forecast_data.append({
+                'date': forecast_date,
+                'avg_temp': forecast_avg_temp,
+                'max_wind': forecast_max_wind,
+                'avg_humidity': forecast_avg_humidity,
+                'condition': forecast_condition,
+                'code': forecast_code
+            })
+        print(forecast_data)
 
-    # Update labels with data from the API
-    city_info.config(text=f'{city}, {country}', justify='center', width=22)
-    weather_icon.config(file=icons[code])
-
-    if current_is_day == 0:
+        # Update labels with data from the API
+        city_info.config(text=f'{city}, {country}', justify='center', width=22)
         weather_icon.config(file=icons[code])
-    else:
-        weather_icon.config(file=icons[code])  # to update when night icons are made
 
-    temp.config(text=current_temp, justify='center', bg=l_blue, fg='white', width=2)
+        if current_is_day == 0:
+            weather_icon.config(file=icons[code])
+        else:
+            weather_icon.config(file=icons[code])  # to update when night icons are made
 
-    if len(current_temp) == 1:
-        temp_symbol.config(text='°', justify='center', bg=l_blue, fg='white')
-        temp_symbol.place(x=206, y=290)
-    else:
-        temp_symbol.config(text='°', justify='center', bg=l_blue, fg='white')
-        temp_symbol.place(x=240, y=290)
+        temp.config(text=current_temp, justify='center', width=2)
 
-    condition.config(text=current_condition, justify='center', bg=l_blue, fg='white')
-    date_info.config(text=local_time, justify='center', bg=l_blue, fg='white')
-    feelslike.config(text=f'{current_feelslike}°', justify='center', bg=l_blue, fg='white')
-    wind.config(text=f'{current_wind_speed} km/h', justify='center', bg=l_blue, fg='white')
-    humidity.config(text=f'{current_humidity}%', justify='center', bg=l_blue, fg='white')
-    precipitation.config(text=f'{current_precipitation} mm', justify='center', bg=l_blue, fg='white')
-    pressure.config(text=f'{current_pressure} hPa', justify='center', bg=l_blue, fg='white')
+        if len(current_temp) == 1:
+            temp_symbol.config(text='°', justify='center')
+            temp_symbol.place(x=206, y=290)
+        else:
+            temp_symbol.config(text='°', justify='center')
+            temp_symbol.place(x=240, y=290)
+
+        condition.config(text=current_condition, justify='center')
+        date_info.config(text=local_time, justify='center')
+        feelslike.config(text=f'{current_feelslike}°', justify='center')
+        wind.config(text=f'{current_wind_speed} km/h', justify='center')
+        humidity.config(text=f'{current_humidity}%', justify='center')
+        precipitation.config(text=f'{current_precipitation} mm', justify='center')
+        pressure.config(text=f'{current_pressure} hPa', justify='center')
+
+    except KeyError:
+        city_info.config(text='Please Enter Location', justify='center', width=22)
 
 
 # ------------------- SEARCH BOX ---------------------
@@ -123,7 +127,6 @@ textfield.bind('<Return>', lambda event=None: search_button.invoke())
 Search_icon = PhotoImage(file='img/magnifying_glass.png')
 search_button = Button(image=Search_icon, activebackground=l_blue, borderwidth=0,
                        cursor='hand2', bg=d_blue, command=get_weather)
-
 search_button.place(x=268, y=65)
 
 # ------ CURRENT WEATHER LABELS (PLACEHOLDERS) -------
@@ -161,7 +164,7 @@ humidity.place(x=162, y=487, height=15)
 precipitation = Label(text='', font=('Noto Sans', 8, 'bold'), bg=l_blue, fg='white', width=5)
 precipitation.place(x=204, y=487, height=15)
 
-pressure = Label(text='', font=('Noto Sans', 8, 'bold'), bg=lblue, fg='white', width=7)
+pressure = Label(text='', font=('Noto Sans', 8, 'bold'), bg=l_blue, fg='white', width=7)
 pressure.place(x=250, y=487, height=15)
 
 root.mainloop()
