@@ -71,18 +71,18 @@ def get_weather():
             forecast_condition = date_entry['day']['condition']['text']
             forecast_code = date_entry['day']['condition']['code']
 
-            forecast_data.append({
-                'date': forecast_date,
-                'avg_temp': forecast_avg_temp,
-                'max_wind': forecast_max_wind,
-                'avg_humidity': forecast_avg_humidity,
-                'condition': forecast_condition,
-                'code': forecast_code
-            })
+            forecast_data.append([forecast_date,
+                                  forecast_avg_temp,
+                                  forecast_max_wind,
+                                  forecast_avg_humidity,
+                                  forecast_condition,
+                                  forecast_code
+                                  ])
+        print(forecast_data[1][0])
         print(forecast_data)
 
         # Update labels with data from the API
-        city_info.config(text=f'{city}, {country}', justify='center', width=22)
+        city_info.config(text=f'{city}, {country}', fg='white', justify='center', width=22)
         weather_icon.config(file=icons[code])
 
         if current_is_day == 0:
@@ -94,10 +94,10 @@ def get_weather():
 
         if len(current_temp) == 1:
             temp_symbol.config(text='°', justify='center')
-            temp_symbol.place(x=206, y=290)
+            temp_symbol.place(x=205, y=290)
         else:
             temp_symbol.config(text='°', justify='center')
-            temp_symbol.place(x=240, y=290)
+            temp_symbol.place(x=238, y=290)
 
         condition.config(text=current_condition, justify='center')
         date_info.config(text=local_time, justify='center')
@@ -108,7 +108,7 @@ def get_weather():
         pressure.config(text=f'{current_pressure} hPa', justify='center')
 
     except KeyError:
-        city_info.config(text='Please Enter Location', justify='center', width=22)
+        city_info.config(text='Enter correct location', fg='yellow', justify='center', width=22)
 
 
 # ------------------- SEARCH BOX ---------------------
