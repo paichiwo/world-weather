@@ -41,7 +41,7 @@ def country_code(country_name):
 def get_weather():
     api_key = '58426b1c8989446e9b7142031230103'
     location = textfield.get()
-    url = f'http://api.weatherapi.com/v1/forecast.json?key={api_key}&q={location}&aqi=no&alerts=no'
+    url = f'http://api.weatherapi.com/v1/forecast.json?key={api_key}&q={location}&days=3&aqi=no&alerts=no'
     data = requests.get(url).json()
 
     # Info data
@@ -70,6 +70,7 @@ def get_weather():
         forecast_max_wind = date_entry['day']['maxwind_kph']
         forecast_avg_humidity = date_entry['day']['avghumidity']
         forecast_condition = date_entry['day']['condition']['text']
+        forecast_code = date_entry['day']['condition']['code']
 
         forecast_data.append({
             'date': forecast_date,
@@ -77,25 +78,36 @@ def get_weather():
             'max_wind': forecast_max_wind,
             'avg_humidity': forecast_avg_humidity,
             'condition': forecast_condition,
+            'code': forecast_code
         })
+    print(forecast_data)
 
     # Update labels with data from the API
     city_info.config(text=f'{city}, {country}', justify='center', width=22)
     weather_icon.config(file=icons[code])
+
+    if current_is_day == 0:
+        weather_icon.config(file=icons[code])
+    else:
+        weather_icon.config(file=icons[code])  # to update when night icons are made
+
     temp.config(text=current_temp, justify='center', bg=l_blue, fg='white', width=2)
+
     if len(current_temp) == 1:
         temp_symbol.config(text='°', justify='center', bg=l_blue, fg='white')
         temp_symbol.place(x=206, y=290)
     else:
         temp_symbol.config(text='°', justify='center', bg=l_blue, fg='white')
         temp_symbol.place(x=240, y=290)
+
     condition.config(text=current_condition, justify='center', bg=l_blue, fg='white')
-    date.config(text=local_time, justify='center', bg=l_blue, fg='white')
+    date_info.config(text=local_time, justify='center', bg=l_blue, fg='white')
     feelslike.config(text=f'{current_feelslike}°', justify='center', bg=l_blue, fg='white')
     wind.config(text=f'{current_wind_speed} km/h', justify='center', bg=l_blue, fg='white')
     humidity.config(text=f'{current_humidity}%', justify='center', bg=l_blue, fg='white')
     precipitation.config(text=f'{current_precipitation} mm', justify='center', bg=l_blue, fg='white')
     pressure.config(text=f'{current_pressure} hPa', justify='center', bg=l_blue, fg='white')
+
 
 # Colors
 l_blue = '#1581ef'
@@ -114,7 +126,8 @@ textfield.focus()
 
 # Search icon
 Search_icon = PhotoImage(file='img/magnifying_glass.png')
-search_button = Button(image=Search_icon, borderwidth=0, cursor='hand2', bg=d_blue, command=get_weather)
+search_button = Button(image=Search_icon, activebackground=l_blue, borderwidth=0,
+                       cursor='hand2', bg=d_blue, command=get_weather)
 search_button.place(x=268, y=65)
 
 # ------ CURRENT WEATHER LABELS (PLACEHOLDERS) -------
@@ -125,7 +138,7 @@ city_info.place(x=65, y=97)
 # Weather icon label
 weather_icon = PhotoImage(file='img/dummy.png')
 weather_label = Label(root, image=weather_icon, bg=l_blue)
-weather_label.place(x=93, y=130)
+weather_label.place(x=95, y=130)
 
 # Temperature with ° symbol
 temp = Label(text='', font=('Noto Sans', 85, 'bold'), bg=l_blue, fg='white')
@@ -136,8 +149,8 @@ temp_symbol.place(x=206, y=290, width=15)
 condition = Label(text='', font=('Noto Sans', 11), bg=l_blue, fg='white', width=27)
 condition.place(x=53, y=390, height=30)
 
-date = Label(text='', font=('Noto Sans', 8), bg=l_blue, fg='white', width=30)
-date.place(x=69, y=418, height=15)
+date_info = Label(text='', font=('Noto Sans', 8), bg=l_blue, fg='white', width=30)
+date_info.place(x=69, y=418, height=15)
 
 # Bottom row
 feelslike = Label(text='', font=('Noto Sans', 8, 'bold'), bg=l_blue, fg='white', width=3)
