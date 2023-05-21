@@ -136,7 +136,8 @@ def get_weather():
 
 
 # SEARCH BOX
-Search_image = PhotoImage(file='img/current_window.png')
+
+Search_image = PhotoImage(file='img/current_window_L.png')
 search_label = Label(image=Search_image, bg='black')
 search_label.place(x=22, y=20)
 
@@ -153,11 +154,11 @@ search_button.place(x=268, y=65)
 # CURRENT WEATHER WINDOW LABELS
 
 # Top row
-city_info = Label(text='', font=('Noto Sans', 12), bg=l_blue, fg='white')
+city_info = Label(text='Enter city name or postcode', font=('Noto Sans', 12), bg=l_blue, fg='white')
 city_info.place(x=65, y=97)
 weather_icon = PhotoImage(file='img/dummy.png')
 weather_label = Label(root, image=weather_icon, bg=l_blue)
-weather_label.place(x=95, y=130)
+weather_label.place(x=97, y=130)
 temp = Label(text='', font=('Noto Sans', 85, 'bold'), bg=l_blue, fg='white')
 temp.place(x=104, y=280, height=111)
 temp_symbol = Label(text='', font=('Noto Sans', 20, 'bold'), height=1, bg=l_blue, fg='white')
