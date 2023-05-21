@@ -46,7 +46,7 @@ def country_code(country_name):
 
 def get_weather():
     """ Connect to API, get data and update tkinter labels """
-    api_key = 'c5d3e150c44446f3b0c170953232105'
+    api_key = ''
     location = textfield.get()
     url = f'http://api.weatherapi.com/v1/forecast.json?key={api_key}&q={location}&days=5&aqi=no&alerts=no'
     try:
