@@ -45,6 +45,7 @@ def country_code(country_name):
 
 
 def get_weather():
+    """ Connect to API, get data and update tkinter labels """
     api_key = ''
     location = textfield.get()
     url = f'http://api.weatherapi.com/v1/forecast.json?key={api_key}&q={location}&days=5&aqi=no&alerts=no'
@@ -55,7 +56,6 @@ def get_weather():
         city = data['location']['name']
         country = country_code(data['location']['country'])
         local_time = format_date_long(data['location']['localtime'][:-6])
-
         # Current data
         code = data['current']['condition']['code']
         current_temp = str(int(data['current']['temp_c']))
@@ -66,7 +66,6 @@ def get_weather():
         current_precipitation = str(int(data['current']['precip_mm']))  # mm, instead of chance of rain %
         current_pressure = str(int(data['current']['pressure_mb']))
         current_is_day = data['current']['is_day']
-
         # Forecast data
         forecast = data['forecast']['forecastday']
         forecast_data = []
@@ -112,7 +111,6 @@ def get_weather():
         pressure.config(text=f'{current_pressure} hPa', justify='center')
 
         # Update forecast weather labels with data from the API
-
         day_1_date.config(text=forecast_data[0][0], justify='center')
         day_1_temp.config(text=f'{forecast_data[0][1]}°', justify='center')
         day_1_humidity.config(text=f'{forecast_data[0][2]}%', justify='center')
@@ -133,28 +131,28 @@ def get_weather():
 
     except KeyError:
         city_info.config(text='Enter correct location', fg='yellow', justify='center', width=22)
+    except (requests.exceptions.ConnectionError, requests.exceptions.JSONDecodeError) as e:
+        city_info.config(text=e, fg='red', justify='center')
 
 
-# ------------------- SEARCH BOX ---------------------
-# Search box image
+# SEARCH BOX
 Search_image = PhotoImage(file='img/current_window.png')
 search_label = Label(image=Search_image, bg='black')
 search_label.place(x=22, y=20)
 
-# Input field
 textfield = tk.Entry(root, justify='center', width=25, font=('Noto Sans', 11, 'bold'), bg=d_blue, border=0, fg='white')
 textfield.place(x=60, y=67, height=22)
 textfield.focus()
 textfield.bind('<Return>', lambda event=None: search_button.invoke())
 
-# Search icon
 Search_icon = PhotoImage(file='img/magnifying_glass.png')
 search_button = Button(image=Search_icon, activebackground=l_blue, borderwidth=0,
                        cursor='hand2', bg=d_blue, command=get_weather)
 search_button.place(x=268, y=65)
 
-# ------ CURRENT WEATHER LABELS (PLACEHOLDERS) -------
-# City information label
+# CURRENT WEATHER WINDOW LABELS
+
+# Top row
 city_info = Label(text='', font=('Noto Sans', 12), bg=l_blue, fg='white')
 city_info.place(x=65, y=97)
 weather_icon = PhotoImage(file='img/dummy.png')
@@ -181,8 +179,8 @@ precipitation.place(x=204, y=487, height=15)
 pressure = Label(text='', font=('Noto Sans', 8, 'bold'), bg=l_blue, fg='white', width=7)
 pressure.place(x=250, y=487, height=15)
 
-# ------ FORECAST WEATHER LABELS (PLACEHOLDERS) ------
-# DAY 1
+# FORECAST WINDOW LABELS
+
 day_1_date = Label(text='', font=('Noto Sans', 9, 'bold'), bg='black', fg='white', width=10)
 day_1_date.place(x=32, y=535, height=20)
 day_1_temp = Label(text='', font=('Noto Sans', 8, 'bold'), bg='black', fg='white', width=10)
@@ -194,7 +192,7 @@ day_1_wind.place(x=37, y=595, height=20)
 day_1_icon = PhotoImage(file='img/dummy_mini.png')
 day_1_icon_label = Label(root, image=day_1_icon, bg='black')
 day_1_icon_label.place(x=53, y=618)
-# DAY 2
+
 day_2_date = Label(text='', font=('Noto Sans', 9, 'bold'), bg='black', fg='white', width=10)
 day_2_date.place(x=135, y=535, height=20)
 day_2_temp = Label(text='', font=('Noto Sans', 8, 'bold'), bg='black', fg='white', width=10)
@@ -206,7 +204,7 @@ day_2_wind.place(x=140, y=595, height=20)
 day_2_icon = PhotoImage(file='img/dummy_mini.png')
 day_2_icon_label = Label(root, image=day_2_icon, bg='black')
 day_2_icon_label.place(x=156, y=618)
-# DAY 3
+
 day_3_date = Label(text='', font=('Noto Sans', 9, 'bold'), bg='black', fg='white', width=10)
 day_3_date.place(x=234, y=535, height=20)
 day_3_temp = Label(text='', font=('Noto Sans', 8, 'bold'), bg='black', fg='white', width=10)
