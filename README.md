@@ -1,4 +1,4 @@
-# **Weather App with PySimpleGUI**
+# **World Weather with tkinter GUI**
 
 This Python application utilizes the tkinter library for the graphical user interface (GUI) and the [weatherapi.com](https://weatherapi.com) API to provide current weather information for any specified location.
 
