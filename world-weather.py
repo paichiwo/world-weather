@@ -45,7 +45,7 @@ def country_code(country_name):
 
 
 def get_weather():
-    api_key = ''
+    api_key = '58426b1c8989446e9b7142031230103'
     location = textfield.get()
     url = f'http://api.weatherapi.com/v1/forecast.json?key={api_key}&q={location}&days=3&aqi=no&alerts=no'
     try:
@@ -118,6 +118,10 @@ def get_weather():
         # Update forecast weather labels with data from the API
         day_1_date.config(text=forecast_data[0][0], justify='center')
 
+        day_2_date.config(text=forecast_data[1][0], justify='center')
+
+        day_3_date.config(text=forecast_data[2][0], justify='center')
+
     except KeyError:
         city_info.config(text='Enter correct location', fg='yellow', justify='center', width=22)
 
@@ -181,7 +185,13 @@ pressure.place(x=250, y=487, height=15)
 # ------ FORECAST WEATHER LABELS (PLACEHOLDERS) ------
 # DAY 1
 day_1_date = Label(text='', font=('Noto Sans', 9, 'bold'), bg='black', fg='white', width=10)
-day_1_date.place(x=30, y=535, height=20)
+day_1_date.place(x=32, y=535, height=20)
+# DAY 2
+day_2_date = Label(text='', font=('Noto Sans', 9, 'bold'), bg='black', fg='white', width=10)
+day_2_date.place(x=135, y=535, height=20)
+# DAY 3
+day_3_date = Label(text='', font=('Noto Sans', 9, 'bold'), bg='black', fg='white', width=10)
+day_3_date.place(x=234, y=535, height=20)
 
 
 root.mainloop()
