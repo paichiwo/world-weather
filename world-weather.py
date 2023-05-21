@@ -18,13 +18,21 @@ l_blue = '#1581ef'
 d_blue = '#1167f2'
 
 
-def format_date(date):
+def format_date_long(date):
     """ Format date to weekday, day month_name (Monday, 14 May) """
     date_object = datetime.strptime(date, '%Y-%m-%d')
     week_day = calendar.day_name[date_object.weekday()]
     month = date_object.month
     month_name = calendar.month_name[month]
     return f'{week_day[:3]}, {date_object.day} {month_name}'
+
+
+def format_date_short(date):
+    """ Format date to day month_name (14 May) """
+    date_object = datetime.strptime(date, '%Y-%m-%d')
+    month = date_object.month
+    month_name = calendar.month_name[month]
+    return f'{date_object.day} {month_name[:3]}'
 
 
 def country_code(country_name):
@@ -46,7 +54,7 @@ def get_weather():
         # Info data
         city = data['location']['name']
         country = country_code(data['location']['country'])
-        local_time = format_date(data['location']['localtime'][:-6])
+        local_time = format_date_long(data['location']['localtime'][:-6])
 
         # Current data
         code = data['current']['condition']['code']
@@ -64,7 +72,7 @@ def get_weather():
         forecast_data = []
 
         for date_entry in forecast:
-            forecast_date = format_date(date_entry['date'])
+            forecast_date = format_date_short(date_entry['date'])
             forecast_avg_temp = date_entry['day']['avgtemp_c']
             forecast_max_wind = date_entry['day']['maxwind_kph']
             forecast_avg_humidity = date_entry['day']['avghumidity']
@@ -81,7 +89,7 @@ def get_weather():
         print(forecast_data[1][0])
         print(forecast_data)
 
-        # Update labels with data from the API
+        # Update current weather labels with data from the API
         city_info.config(text=f'{city}, {country}', fg='white', justify='center', width=22)
         weather_icon.config(file=icons[code])
 
@@ -106,6 +114,9 @@ def get_weather():
         humidity.config(text=f'{current_humidity}%', justify='center')
         precipitation.config(text=f'{current_precipitation} mm', justify='center')
         pressure.config(text=f'{current_pressure} hPa', justify='center')
+
+        # Update forecast weather labels with data from the API
+        day_1_date.config(text=forecast_data[0][0], justify='center')
 
     except KeyError:
         city_info.config(text='Enter correct location', fg='yellow', justify='center', width=22)
@@ -166,5 +177,11 @@ precipitation.place(x=204, y=487, height=15)
 
 pressure = Label(text='', font=('Noto Sans', 8, 'bold'), bg=l_blue, fg='white', width=7)
 pressure.place(x=250, y=487, height=15)
+
+# ------ FORECAST WEATHER LABELS (PLACEHOLDERS) ------
+# DAY 1
+day_1_date = Label(text='', font=('Noto Sans', 9, 'bold'), bg='black', fg='white', width=10)
+day_1_date.place(x=30, y=535, height=20)
+
 
 root.mainloop()
