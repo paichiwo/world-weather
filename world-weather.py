@@ -85,11 +85,13 @@ def get_weather():
                                   ])
 
         # Update current weather labels with data from the API
-        city_info.config(text=f'{city}, {country}', fg='white', justify='center', width=22)
+        city_info.config(text=f'{city}, {country}', fg='white', font=('Noto Sans', 12), justify='center', width=22)
+        city_info.place(x=65, y=97)
         weather_icon.config(file=icons[code])
 
         if current_is_day == 0:
             weather_icon.config(file=icons[code])
+            weather_label.place(x=97, y=130)
         else:
             weather_icon.config(file=icons[code])  # to update when night icons are made
 
@@ -137,8 +139,8 @@ def get_weather():
 
 # SEARCH BOX
 
-Search_image = PhotoImage(file='img/current_window_L.png')
-search_label = Label(image=Search_image, bg='black')
+search_image = PhotoImage(file='img/current_window.png')
+search_label = Label(image=search_image, bg='black')
 search_label.place(x=22, y=20)
 
 textfield = tk.Entry(root, justify='center', width=25, font=('Noto Sans', 11, 'bold'), bg=d_blue, border=0, fg='white')
@@ -146,19 +148,19 @@ textfield.place(x=60, y=67, height=22)
 textfield.focus()
 textfield.bind('<Return>', lambda event=None: search_button.invoke())
 
-Search_icon = PhotoImage(file='img/magnifying_glass.png')
-search_button = Button(image=Search_icon, activebackground=l_blue, borderwidth=0,
+search_icon = PhotoImage(file='img/magnifying_glass.png')
+search_button = Button(image=search_icon, activebackground=l_blue, borderwidth=0,
                        cursor='hand2', bg=d_blue, command=get_weather)
 search_button.place(x=268, y=65)
 
 # CURRENT WEATHER WINDOW LABELS
 
 # Top row
-city_info = Label(text='Enter city name or postcode', font=('Noto Sans', 12), bg=l_blue, fg='white')
-city_info.place(x=65, y=97)
-weather_icon = PhotoImage(file='img/dummy.png')
+city_info = Label(text='Enter city name or postcode', font=('Noto Sans', 10), bg=l_blue, fg='white')
+city_info.place(x=90, y=97)
+weather_icon = PhotoImage(file='img/splash_icon.png')
 weather_label = Label(root, image=weather_icon, bg=l_blue)
-weather_label.place(x=97, y=130)
+weather_label.place(x=105, y=157)
 temp = Label(text='', font=('Noto Sans', 85, 'bold'), bg=l_blue, fg='white')
 temp.place(x=104, y=280, height=111)
 temp_symbol = Label(text='', font=('Noto Sans', 20, 'bold'), height=1, bg=l_blue, fg='white')
