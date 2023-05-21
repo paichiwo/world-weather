@@ -1,16 +1,19 @@
 # **Weather App with PySimpleGUI**
 
-This is a simple Python app that displays the current weather information for a given location, using the [PySimpleGUI](https://pysimplegui.readthedocs.io/en/latest/) library for the GUI and the [Weatherstack](https://weatherstack.com/) API for the weather data.
+This Python application utilizes the tkinter library for the graphical user interface (GUI) and the [weatherapi.com](https://weatherapi.com) API to provide current weather information for any specified location.
 
-The app displays a window with three columns: an image column with an icon representing the current weather condition, and two info columns with details about the temperature, wind, humidity, etc. The user can input a location in a text field, and click a button to update the weather information.
+The app consists of three main sections:
+
+1. **Search Bar**: Allows users to search for locations worldwide using city names, country names, or postcodes.
+2. **Current Weather**: Displays the weather information for the present day.
+3. **3-Day Forecast**: Provides a forecast for the next three days.
 
 ## **Prerequisites**
 
-To run this app, you need to have Python 3.x and PySimpleGUI installed. You also need to sign up for a free API key from [Weatherstack](https://weatherstack.com/) and paste it in the **api\_key** variable in the code.
+To run this app, you need to have Python 3.x and PySimpleGUI installed. You also need to sign up for a free API key from [weatherapi.com](https://weatherapi.com/) and paste it in the **api\_key** variable in the code.
 
 You can install the required modules via pip:
 
-`pip install pysimplegui`   
 `pip install requests`
 
 Alternatively run this command for automatic module installation:
@@ -21,13 +24,17 @@ Alternatively run this command for automatic module installation:
 
 To run the app, open a terminal in the folder containing the code file, and type:
 
-`python World_Weather.py`
+`python world-weather.py`
 
-This should open the app window. You can enter a location (e.g., "London, UK") in the input field, and click the "Search" button to update the weather information.
+This should open the app window. You can enter a location (e.g., "London" or "BH6 5PL) in the input field, and click the "Search" button (or press Enter) to update the weather information.
 
-## **How to Customize**
-
-You can customize the app by changing the images in the **weather\_icons** dictionary to match your own icons, or by modifying the GUI layout in the **create\_window** function. You can also change the theme of the app by passing a different theme name to the **sg.theme** function in the **create\_window** function. The available theme names are listed in the [PySimpleGUI documentation](https://pysimplegui.readthedocs.io/en/latest/#themes).
+Current weather window is pretty much self-explanatory.
+The icons in the bottom row represent the following:
+   - "Feels like" temperature
+   - Wind speed
+   - Humidity
+   - Amount of rainfall
+   - Pressure
 
 ## **Contributing**
 
