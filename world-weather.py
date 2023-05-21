@@ -47,7 +47,7 @@ def country_code(country_name):
 def get_weather():
     api_key = '58426b1c8989446e9b7142031230103'
     location = textfield.get()
-    url = f'http://api.weatherapi.com/v1/forecast.json?key={api_key}&q={location}&days=3&aqi=no&alerts=no'
+    url = f'http://api.weatherapi.com/v1/forecast.json?key={api_key}&q={location}&days=5&aqi=no&alerts=no'
     try:
         data = requests.get(url).json()
 
@@ -73,17 +73,15 @@ def get_weather():
 
         for date_entry in forecast:
             forecast_date = format_date_short(date_entry['date'])
-            forecast_avg_temp = date_entry['day']['avgtemp_c']
-            forecast_max_wind = date_entry['day']['maxwind_kph']
-            forecast_avg_humidity = date_entry['day']['avghumidity']
-            forecast_condition = date_entry['day']['condition']['text']
+            forecast_avg_temp = str(int(date_entry['day']['avgtemp_c']))
+            forecast_avg_humidity = str(int(date_entry['day']['avghumidity']))
+            forecast_max_wind = str(int(date_entry['day']['maxwind_kph']))
             forecast_code = date_entry['day']['condition']['code']
 
             forecast_data.append([forecast_date,
                                   forecast_avg_temp,
                                   forecast_max_wind,
                                   forecast_avg_humidity,
-                                  forecast_condition,
                                   forecast_code
                                   ])
         print(forecast_data[1][0])
@@ -117,11 +115,17 @@ def get_weather():
 
         # Update forecast weather labels with data from the API
         day_1_date.config(text=forecast_data[0][0], justify='center')
-
+        day_1_temp.config(text=f'{forecast_data[0][1]}°', justify='center')
+        day_1_humidity.config(text=f'{forecast_data[0][2]}%', justify='center')
+        day_1_wind.config(text=f'{forecast_data[0][3]} km/h', justify='center')
         day_2_date.config(text=forecast_data[1][0], justify='center')
-
+        day_2_temp.config(text=f'{forecast_data[1][1]}°', justify='center')
+        day_2_humidity.config(text=f'{forecast_data[1][2]}%', justify='center')
+        day_2_wind.config(text=f'{forecast_data[1][3]} km/h', justify='center')
         day_3_date.config(text=forecast_data[2][0], justify='center')
-
+        day_3_temp.config(text=f'{forecast_data[2][1]}°', justify='center')
+        day_3_humidity.config(text=f'{forecast_data[2][2]}%', justify='center')
+        day_3_wind.config(text=f'{forecast_data[2][3]} km/h', justify='center')
     except KeyError:
         city_info.config(text='Enter correct location', fg='yellow', justify='center', width=22)
 
@@ -184,14 +188,31 @@ pressure.place(x=250, y=487, height=15)
 
 # ------ FORECAST WEATHER LABELS (PLACEHOLDERS) ------
 # DAY 1
-day_1_date = Label(text='', font=('Noto Sans', 9, 'bold'), bg='black', fg='white', width=10)
+day_1_date = Label(text='a', font=('Noto Sans', 9, 'bold'), bg='black', fg='white', width=10)
 day_1_date.place(x=32, y=535, height=20)
+day_1_temp = Label(text='a', font=('Noto Sans', 8, 'bold'), bg='black', fg='white', width=10)
+day_1_temp.place(x=37, y=555, height=20)
+day_1_humidity = Label(text='a', font=('Noto Sans', 8, 'bold'), bg='black', fg='white', width=10)
+day_1_humidity.place(x=37, y=575, height=20)
+day_1_wind = Label(text='a', font=('Noto Sans', 8, 'bold'), bg='black', fg='white', width=10)
+day_1_wind.place(x=37, y=595, height=20)
 # DAY 2
-day_2_date = Label(text='', font=('Noto Sans', 9, 'bold'), bg='black', fg='white', width=10)
+day_2_date = Label(text='a', font=('Noto Sans', 9, 'bold'), bg='black', fg='white', width=10)
 day_2_date.place(x=135, y=535, height=20)
+day_2_temp = Label(text='a', font=('Noto Sans', 8, 'bold'), bg='black', fg='white', width=10)
+day_2_temp.place(x=140, y=555, height=20)
+day_2_humidity = Label(text='a', font=('Noto Sans', 8, 'bold'), bg='black', fg='white', width=10)
+day_2_humidity.place(x=140, y=575, height=20)
+day_2_wind = Label(text='a', font=('Noto Sans', 8, 'bold'), bg='black', fg='white', width=10)
+day_2_wind.place(x=140, y=595, height=20)
 # DAY 3
-day_3_date = Label(text='', font=('Noto Sans', 9, 'bold'), bg='black', fg='white', width=10)
+day_3_date = Label(text='a', font=('Noto Sans', 9, 'bold'), bg='black', fg='white', width=10)
 day_3_date.place(x=234, y=535, height=20)
-
+day_3_temp = Label(text='a', font=('Noto Sans', 8, 'bold'), bg='black', fg='white', width=10)
+day_3_temp.place(x=239, y=555, height=20)
+day_3_humidity = Label(text='a', font=('Noto Sans', 8, 'bold'), bg='black', fg='white', width=10)
+day_3_humidity.place(x=239, y=575, height=20)
+day_3_wind = Label(text='a', font=('Noto Sans', 8, 'bold'), bg='black', fg='white', width=10)
+day_3_wind.place(x=239, y=595, height=20)
 
 root.mainloop()
