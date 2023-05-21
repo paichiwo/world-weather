@@ -4,7 +4,7 @@ import tkinter as tk
 import requests
 import calendar
 import json
-from weather_icons import icons
+from weather_icons import icons, icons_mini
 
 # Create the window and set the basics
 root = Tk()
@@ -45,7 +45,7 @@ def country_code(country_name):
 
 
 def get_weather():
-    api_key = '58426b1c8989446e9b7142031230103'
+    api_key = ''
     location = textfield.get()
     url = f'http://api.weatherapi.com/v1/forecast.json?key={api_key}&q={location}&days=5&aqi=no&alerts=no'
     try:
@@ -84,8 +84,6 @@ def get_weather():
                                   forecast_avg_humidity,
                                   forecast_code
                                   ])
-        print(forecast_data[1][0])
-        print(forecast_data)
 
         # Update current weather labels with data from the API
         city_info.config(text=f'{city}, {country}', fg='white', justify='center', width=22)
@@ -114,18 +112,25 @@ def get_weather():
         pressure.config(text=f'{current_pressure} hPa', justify='center')
 
         # Update forecast weather labels with data from the API
+
         day_1_date.config(text=forecast_data[0][0], justify='center')
         day_1_temp.config(text=f'{forecast_data[0][1]}°', justify='center')
         day_1_humidity.config(text=f'{forecast_data[0][2]}%', justify='center')
         day_1_wind.config(text=f'{forecast_data[0][3]} km/h', justify='center')
+        day_1_icon.config(file=icons_mini[forecast_data[0][4]])
+
         day_2_date.config(text=forecast_data[1][0], justify='center')
         day_2_temp.config(text=f'{forecast_data[1][1]}°', justify='center')
         day_2_humidity.config(text=f'{forecast_data[1][2]}%', justify='center')
         day_2_wind.config(text=f'{forecast_data[1][3]} km/h', justify='center')
+        day_2_icon.config(file=icons_mini[forecast_data[1][4]])
+
         day_3_date.config(text=forecast_data[2][0], justify='center')
         day_3_temp.config(text=f'{forecast_data[2][1]}°', justify='center')
         day_3_humidity.config(text=f'{forecast_data[2][2]}%', justify='center')
         day_3_wind.config(text=f'{forecast_data[2][3]} km/h', justify='center')
+        day_3_icon.config(file=icons_mini[forecast_data[2][4]])
+
     except KeyError:
         city_info.config(text='Enter correct location', fg='yellow', justify='center', width=22)
 
@@ -152,67 +157,66 @@ search_button.place(x=268, y=65)
 # City information label
 city_info = Label(text='', font=('Noto Sans', 12), bg=l_blue, fg='white')
 city_info.place(x=65, y=97)
-
-# Weather icon label
 weather_icon = PhotoImage(file='img/dummy.png')
 weather_label = Label(root, image=weather_icon, bg=l_blue)
 weather_label.place(x=95, y=130)
-
-# Temperature with ° symbol
 temp = Label(text='', font=('Noto Sans', 85, 'bold'), bg=l_blue, fg='white')
 temp.place(x=104, y=280, height=111)
 temp_symbol = Label(text='', font=('Noto Sans', 20, 'bold'), height=1, bg=l_blue, fg='white')
 temp_symbol.place(x=206, y=290, width=15)
-
 condition = Label(text='', font=('Noto Sans', 11), bg=l_blue, fg='white', width=27)
 condition.place(x=53, y=390, height=30)
-
 date_info = Label(text='', font=('Noto Sans', 8), bg=l_blue, fg='white', width=30)
 date_info.place(x=69, y=418, height=15)
 
 # Bottom row
 feelslike = Label(text='', font=('Noto Sans', 8, 'bold'), bg=l_blue, fg='white', width=3)
 feelslike.place(x=63, y=487, height=15)
-
 wind = Label(text='', font=('Noto Sans', 8, 'bold'), bg=l_blue, fg='white', width=7)
 wind.place(x=98, y=487, height=15)
-
 humidity = Label(text='', font=('Noto Sans', 8, 'bold'), bg=l_blue, fg='white', width=4)
 humidity.place(x=162, y=487, height=15)
-
 precipitation = Label(text='', font=('Noto Sans', 8, 'bold'), bg=l_blue, fg='white', width=5)
 precipitation.place(x=204, y=487, height=15)
-
 pressure = Label(text='', font=('Noto Sans', 8, 'bold'), bg=l_blue, fg='white', width=7)
 pressure.place(x=250, y=487, height=15)
 
 # ------ FORECAST WEATHER LABELS (PLACEHOLDERS) ------
 # DAY 1
-day_1_date = Label(text='a', font=('Noto Sans', 9, 'bold'), bg='black', fg='white', width=10)
+day_1_date = Label(text='', font=('Noto Sans', 9, 'bold'), bg='black', fg='white', width=10)
 day_1_date.place(x=32, y=535, height=20)
-day_1_temp = Label(text='a', font=('Noto Sans', 8, 'bold'), bg='black', fg='white', width=10)
+day_1_temp = Label(text='', font=('Noto Sans', 8, 'bold'), bg='black', fg='white', width=10)
 day_1_temp.place(x=37, y=555, height=20)
-day_1_humidity = Label(text='a', font=('Noto Sans', 8, 'bold'), bg='black', fg='white', width=10)
+day_1_humidity = Label(text='', font=('Noto Sans', 8, 'bold'), bg='black', fg='white', width=10)
 day_1_humidity.place(x=37, y=575, height=20)
-day_1_wind = Label(text='a', font=('Noto Sans', 8, 'bold'), bg='black', fg='white', width=10)
+day_1_wind = Label(text='', font=('Noto Sans', 8, 'bold'), bg='black', fg='white', width=10)
 day_1_wind.place(x=37, y=595, height=20)
+day_1_icon = PhotoImage(file='img/dummy_mini.png')
+day_1_icon_label = Label(root, image=day_1_icon, bg='black')
+day_1_icon_label.place(x=53, y=618)
 # DAY 2
-day_2_date = Label(text='a', font=('Noto Sans', 9, 'bold'), bg='black', fg='white', width=10)
+day_2_date = Label(text='', font=('Noto Sans', 9, 'bold'), bg='black', fg='white', width=10)
 day_2_date.place(x=135, y=535, height=20)
-day_2_temp = Label(text='a', font=('Noto Sans', 8, 'bold'), bg='black', fg='white', width=10)
+day_2_temp = Label(text='', font=('Noto Sans', 8, 'bold'), bg='black', fg='white', width=10)
 day_2_temp.place(x=140, y=555, height=20)
-day_2_humidity = Label(text='a', font=('Noto Sans', 8, 'bold'), bg='black', fg='white', width=10)
+day_2_humidity = Label(text='', font=('Noto Sans', 8, 'bold'), bg='black', fg='white', width=10)
 day_2_humidity.place(x=140, y=575, height=20)
-day_2_wind = Label(text='a', font=('Noto Sans', 8, 'bold'), bg='black', fg='white', width=10)
+day_2_wind = Label(text='', font=('Noto Sans', 8, 'bold'), bg='black', fg='white', width=10)
 day_2_wind.place(x=140, y=595, height=20)
+day_2_icon = PhotoImage(file='img/dummy_mini.png')
+day_2_icon_label = Label(root, image=day_2_icon, bg='black')
+day_2_icon_label.place(x=156, y=618)
 # DAY 3
-day_3_date = Label(text='a', font=('Noto Sans', 9, 'bold'), bg='black', fg='white', width=10)
+day_3_date = Label(text='', font=('Noto Sans', 9, 'bold'), bg='black', fg='white', width=10)
 day_3_date.place(x=234, y=535, height=20)
-day_3_temp = Label(text='a', font=('Noto Sans', 8, 'bold'), bg='black', fg='white', width=10)
+day_3_temp = Label(text='', font=('Noto Sans', 8, 'bold'), bg='black', fg='white', width=10)
 day_3_temp.place(x=239, y=555, height=20)
-day_3_humidity = Label(text='a', font=('Noto Sans', 8, 'bold'), bg='black', fg='white', width=10)
+day_3_humidity = Label(text='', font=('Noto Sans', 8, 'bold'), bg='black', fg='white', width=10)
 day_3_humidity.place(x=239, y=575, height=20)
-day_3_wind = Label(text='a', font=('Noto Sans', 8, 'bold'), bg='black', fg='white', width=10)
+day_3_wind = Label(text='', font=('Noto Sans', 8, 'bold'), bg='black', fg='white', width=10)
 day_3_wind.place(x=239, y=595, height=20)
+day_3_icon = PhotoImage(file='img/dummy_mini.png')
+day_3_icon_label = Label(root, image=day_3_icon, bg='black')
+day_3_icon_label.place(x=255, y=618)
 
 root.mainloop()
