@@ -44,56 +44,69 @@ def country_code(country_name):
             return name['Code']
 
 
+def mtr_sec_to_km_per_hour(ms):
+    """ Convert units - m/s to km/h """
+    return ms * (1 / 1000) / (1 / 3600)
+
+
 def get_weather():
     """ Connect to API, get data and update tkinter labels """
-    api_key = ''
+    API_KEY = 'bfd79540de874cedbed1d3b2aa46d85a'
     location = textfield.get()
-    url = f'http://api.weatherapi.com/v1/forecast.json?key={api_key}&q={location}&days=5&aqi=no&alerts=no'
     try:
-        data = requests.get(url).json()
+        try:
+            url = f'https://api.weatherbit.io/v2.0/current?city={location}&key={API_KEY}'
+            current_data = requests.get(url).json()
+            f_url = f'https://api.weatherbit.io/v2.0/forecast/daily?city={location}&key={API_KEY}&days=4'
+            forecast_data = requests.get(f_url).json()
+        except requests.exceptions.JSONDecodeError:
+            url = f'https://api.weatherbit.io/v2.0/current?postal_code={location}&key={API_KEY}'
+            current_data = requests.get(url).json()
+            f_url = f'https://api.weatherbit.io/v2.0/forecast/daily?postal_code={location}&key={API_KEY}&days=4'
+            forecast_data = requests.get(f_url).json()
 
-        # Info data
-        city = data['location']['name']
-        country = country_code(data['location']['country'])
-        local_time = format_date_long(data['location']['localtime'][:-6])
-        # Current data
-        code = data['current']['condition']['code']
-        current_temp = str(int(data['current']['temp_c']))
-        current_condition = data['current']['condition']['text']
-        current_feelslike = str(int(data['current']['feelslike_c']))
-        current_wind_speed = str(int(data['current']['wind_kph']))
-        current_humidity = data['current']['humidity']
-        current_precipitation = str(int(data['current']['precip_mm']))  # mm, instead of chance of rain %
-        current_pressure = str(int(data['current']['pressure_mb']))
-        current_is_day = data['current']['is_day']
-        # Forecast data
-        forecast = data['forecast']['forecastday']
-        forecast_data = []
+        # Info Data
+        city = current_data['data'][0]['city_name']
+        country = current_data['data'][0]['country_code']
+        local_time = format_date_long(current_data['data'][0]['datetime'][:-3])
 
-        for date_entry in forecast:
-            forecast_date = format_date_short(date_entry['date'])
-            forecast_avg_temp = str(int(date_entry['day']['avgtemp_c']))
-            forecast_avg_humidity = str(int(date_entry['day']['avghumidity']))
-            forecast_max_wind = str(int(date_entry['day']['maxwind_kph']))
-            forecast_code = date_entry['day']['condition']['code']
+        # Current Data
+        code = current_data['data'][0]['weather']['code']
+        current_temp = str(int(current_data['data'][0]['temp']))
+        current_condition = current_data['data'][0]['weather']['description']
+        current_feelslike = str(int(current_data['data'][0]['app_temp']))
+        current_wind_speed = str(int(mtr_sec_to_km_per_hour(current_data['data'][0]['wind_spd'])))
+        current_humidity = current_data['data'][0]['rh']
+        current_cloud_coverage = str(int(current_data['data'][0]['clouds']))
+        current_pressure = str(int(current_data['data'][0]['slp']))
+        current_day_or_night = current_data['data'][0]['pod']
 
-            forecast_data.append([forecast_date,
-                                  forecast_avg_temp,
-                                  forecast_max_wind,
-                                  forecast_avg_humidity,
-                                  forecast_code
-                                  ])
+        # Forecast Data
+        forecast_data_list = []
+
+        for forecast_days in forecast_data['data'][1:]:
+            forecast_date = format_date_short(forecast_days['datetime'])
+            forecast_avg_temp = str(int(forecast_days['temp']))
+            forecast_avg_humidity = str(int(forecast_days['rh']))
+            forecast_max_wind = str(int(mtr_sec_to_km_per_hour(forecast_days['wind_spd'])))
+            forecast_code = forecast_days['weather']['code']
+
+            forecast_data_list.append([forecast_date,
+                                       forecast_avg_temp,
+                                       forecast_max_wind,
+                                       forecast_avg_humidity,
+                                       forecast_code])
 
         # Update current weather labels with data from the API
         city_info.config(text=f'{city}, {country}', fg='white', font=('Noto Sans', 12), justify='center', width=22)
         city_info.place(x=65, y=97)
-        weather_icon.config(file=icons[code])
+        # weather_icon.config(file=icons[code])
 
-        if current_is_day == 0:
-            weather_icon.config(file=icons[code])
-            weather_label.place(x=97, y=130)
-        else:
-            weather_icon.config(file=icons[code])  # to update when night icons are made
+        # if current_day_or_night == 'd':
+        #     weather_icon.config(file=icons[code])
+        #     weather_label.place(x=97, y=130)
+        # else:
+        #     weather_icon.config(file=icons[code])  # to update when night icons are made
 
         temp.config(text=current_temp, justify='center', width=2)
 
@@ -109,32 +122,34 @@ def get_weather():
         feelslike.config(text=f'{current_feelslike}°', justify='center')
         wind.config(text=f'{current_wind_speed} km/h', justify='center')
         humidity.config(text=f'{current_humidity}%', justify='center')
-        precipitation.config(text=f'{current_precipitation} mm', justify='center')
+        precipitation.config(text=f'{current_cloud_coverage}%', justify='center')  # change graphics !!!!!!
         pressure.config(text=f'{current_pressure} hPa', justify='center')
 
         # Update forecast weather labels with data from the API
-        day_1_date.config(text=forecast_data[0][0], justify='center')
-        day_1_temp.config(text=f'{forecast_data[0][1]}°', justify='center')
-        day_1_humidity.config(text=f'{forecast_data[0][2]}%', justify='center')
-        day_1_wind.config(text=f'{forecast_data[0][3]} km/h', justify='center')
-        day_1_icon.config(file=icons_mini[forecast_data[0][4]])
+        day_1_date.config(text=forecast_data_list[0][0], justify='center')
+        day_1_temp.config(text=f'{forecast_data_list[0][1]}°', justify='center')
+        day_1_humidity.config(text=f'{forecast_data_list[0][2]}%', justify='center')
+        day_1_wind.config(text=f'{forecast_data_list[0][3]} km/h', justify='center')
+        # day_1_icon.config(file=icons_mini[forecast_data_list[0][4]])
 
-        day_2_date.config(text=forecast_data[1][0], justify='center')
-        day_2_temp.config(text=f'{forecast_data[1][1]}°', justify='center')
-        day_2_humidity.config(text=f'{forecast_data[1][2]}%', justify='center')
-        day_2_wind.config(text=f'{forecast_data[1][3]} km/h', justify='center')
-        day_2_icon.config(file=icons_mini[forecast_data[1][4]])
+        day_2_date.config(text=forecast_data_list[1][0], justify='center')
+        day_2_temp.config(text=f'{forecast_data_list[1][1]}°', justify='center')
+        day_2_humidity.config(text=f'{forecast_data_list[1][2]}%', justify='center')
+        day_2_wind.config(text=f'{forecast_data_list[1][3]} km/h', justify='center')
+        # day_2_icon.config(file=icons_mini[forecast_data_list[1][4]])
 
-        day_3_date.config(text=forecast_data[2][0], justify='center')
-        day_3_temp.config(text=f'{forecast_data[2][1]}°', justify='center')
-        day_3_humidity.config(text=f'{forecast_data[2][2]}%', justify='center')
-        day_3_wind.config(text=f'{forecast_data[2][3]} km/h', justify='center')
-        day_3_icon.config(file=icons_mini[forecast_data[2][4]])
+        day_3_date.config(text=forecast_data_list[2][0], justify='center')
+        day_3_temp.config(text=f'{forecast_data_list[2][1]}°', justify='center')
+        day_3_humidity.config(text=f'{forecast_data_list[2][2]}%', justify='center')
+        day_3_wind.config(text=f'{forecast_data_list[2][3]} km/h', justify='center')
+        # day_3_icon.config(file=icons_mini[forecast_data[2][4]])
 
     except KeyError:
         city_info.config(text='Enter correct location', fg='yellow', justify='center', width=22)
-    except (requests.exceptions.ConnectionError, requests.exceptions.JSONDecodeError) as e:
-        city_info.config(text=e, fg='red', justify='center')
+    except requests.exceptions.ConnectionError as e:
+        city_info.config(text=str(e), fg='red', justify='center')
+        print(e)
+
 
 
 # SEARCH BOX
