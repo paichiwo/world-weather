@@ -4,7 +4,7 @@ import tkinter as tk
 import requests
 import calendar
 import json
-from weather_icons import icons, icons_mini
+from weather_icons import icons_day, icons_mini
 
 # Create the window and set the basics
 root = Tk()
@@ -51,18 +51,18 @@ def mtr_sec_to_km_per_hour(ms):
 
 def get_weather():
     """ Connect to API, get data and update tkinter labels """
-    API_KEY = 'bfd79540de874cedbed1d3b2aa46d85a'
+    api_key = 'bfd79540de874cedbed1d3b2aa46d85a'
     location = textfield.get()
     try:
         try:
-            url = f'https://api.weatherbit.io/v2.0/current?city={location}&key={API_KEY}'
+            url = f'https://api.weatherbit.io/v2.0/current?city={location}&key={api_key}'
             current_data = requests.get(url).json()
-            f_url = f'https://api.weatherbit.io/v2.0/forecast/daily?city={location}&key={API_KEY}&days=4'
+            f_url = f'https://api.weatherbit.io/v2.0/forecast/daily?city={location}&key={api_key}&days=4'
             forecast_data = requests.get(f_url).json()
         except requests.exceptions.JSONDecodeError:
-            url = f'https://api.weatherbit.io/v2.0/current?postal_code={location}&key={API_KEY}'
+            url = f'https://api.weatherbit.io/v2.0/current?postal_code={location}&key={api_key}'
             current_data = requests.get(url).json()
-            f_url = f'https://api.weatherbit.io/v2.0/forecast/daily?postal_code={location}&key={API_KEY}&days=4'
+            f_url = f'https://api.weatherbit.io/v2.0/forecast/daily?postal_code={location}&key={api_key}&days=4'
             forecast_data = requests.get(f_url).json()
 
         # Info Data
@@ -93,20 +93,20 @@ def get_weather():
 
             forecast_data_list.append([forecast_date,
                                        forecast_avg_temp,
-                                       forecast_max_wind,
                                        forecast_avg_humidity,
+                                       forecast_max_wind,
                                        forecast_code])
 
         # Update current weather labels with data from the API
         city_info.config(text=f'{city}, {country}', fg='white', font=('Noto Sans', 12), justify='center', width=22)
         city_info.place(x=65, y=97)
-        # weather_icon.config(file=icons[code])
 
-        # if current_day_or_night == 'd':
-        #     weather_icon.config(file=icons[code])
-        #     weather_label.place(x=97, y=130)
-        # else:
-        #     weather_icon.config(file=icons[code])  # to update when night icons are made
+        if current_day_or_night == 'd':
+            weather_icon.config(file=icons_day[code])
+            weather_label.place(x=97, y=130)
+        else:
+            weather_icon.config(file=icons_day[code])  # to update when night icons are made
+            weather_label.place(x=97, y=130)
 
         temp.config(text=current_temp, justify='center', width=2)
 
@@ -130,26 +130,24 @@ def get_weather():
         day_1_temp.config(text=f'{forecast_data_list[0][1]}°', justify='center')
         day_1_humidity.config(text=f'{forecast_data_list[0][2]}%', justify='center')
         day_1_wind.config(text=f'{forecast_data_list[0][3]} km/h', justify='center')
-        # day_1_icon.config(file=icons_mini[forecast_data_list[0][4]])
+        day_1_icon.config(file=icons_mini[forecast_data_list[0][4]])
 
         day_2_date.config(text=forecast_data_list[1][0], justify='center')
         day_2_temp.config(text=f'{forecast_data_list[1][1]}°', justify='center')
         day_2_humidity.config(text=f'{forecast_data_list[1][2]}%', justify='center')
         day_2_wind.config(text=f'{forecast_data_list[1][3]} km/h', justify='center')
-        # day_2_icon.config(file=icons_mini[forecast_data_list[1][4]])
+        day_2_icon.config(file=icons_mini[forecast_data_list[1][4]])
 
         day_3_date.config(text=forecast_data_list[2][0], justify='center')
         day_3_temp.config(text=f'{forecast_data_list[2][1]}°', justify='center')
         day_3_humidity.config(text=f'{forecast_data_list[2][2]}%', justify='center')
         day_3_wind.config(text=f'{forecast_data_list[2][3]} km/h', justify='center')
-        # day_3_icon.config(file=icons_mini[forecast_data[2][4]])
+        day_3_icon.config(file=icons_mini[forecast_data_list[2][4]])
 
     except KeyError:
         city_info.config(text='Enter correct location', fg='yellow', justify='center', width=22)
     except requests.exceptions.ConnectionError as e:
-        city_info.config(text=str(e), fg='red', justify='center')
-        print(e)
-
+        get_weather()
 
 
 # SEARCH BOX
