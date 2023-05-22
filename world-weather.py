@@ -3,7 +3,6 @@ from tkinter import *
 import tkinter as tk
 import requests
 import calendar
-import json
 from weather_icons import icons_day, icons_mini
 
 # Create the window and set the basics
