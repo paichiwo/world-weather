@@ -33,7 +33,7 @@ The icons in the bottom row represent the following:
    - "Feels like" temperature
    - Wind speed
    - Humidity
-   - Amount of rainfall
+   - Cloud coverage
    - Pressure
 
 ## **Contributing**
