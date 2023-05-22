@@ -51,7 +51,7 @@ def mtr_sec_to_km_per_hour(ms):
 
 def get_weather():
     """ Connect to API, get data and update tkinter labels """
-    api_key = 'bfd79540de874cedbed1d3b2aa46d85a'
+    api_key = ''
     location = textfield.get()
     try:
         try:
@@ -122,7 +122,7 @@ def get_weather():
         feelslike.config(text=f'{current_feelslike}°', justify='center')
         wind.config(text=f'{current_wind_speed} km/h', justify='center')
         humidity.config(text=f'{current_humidity}%', justify='center')
-        precipitation.config(text=f'{current_cloud_coverage}%', justify='center')  # change graphics !!!!!!
+        cloud_coverage.config(text=f'{current_cloud_coverage}%', justify='center')  # change graphics !!!!!!
         pressure.config(text=f'{current_pressure} hPa', justify='center')
 
         # Update forecast weather labels with data from the API
@@ -146,7 +146,7 @@ def get_weather():
 
     except KeyError:
         city_info.config(text='Enter correct location', fg='yellow', justify='center', width=22)
-    except requests.exceptions.ConnectionError as e:
+    except requests.exceptions.ConnectionError:
         get_weather()
 
 
@@ -187,13 +187,13 @@ date_info.place(x=69, y=418, height=15)
 feelslike = Label(text='', font=('Noto Sans', 8, 'bold'), bg=l_blue, fg='white', width=3)
 feelslike.place(x=63, y=487, height=15)
 wind = Label(text='', font=('Noto Sans', 8, 'bold'), bg=l_blue, fg='white', width=7)
-wind.place(x=98, y=487, height=15)
+wind.place(x=100, y=487, height=15)
 humidity = Label(text='', font=('Noto Sans', 8, 'bold'), bg=l_blue, fg='white', width=4)
-humidity.place(x=162, y=487, height=15)
-precipitation = Label(text='', font=('Noto Sans', 8, 'bold'), bg=l_blue, fg='white', width=5)
-precipitation.place(x=204, y=487, height=15)
+humidity.place(x=163, y=487, height=15)
+cloud_coverage = Label(text='', font=('Noto Sans', 8, 'bold'), bg=l_blue, fg='white', width=5)
+cloud_coverage.place(x=206, y=487, height=15)
 pressure = Label(text='', font=('Noto Sans', 8, 'bold'), bg=l_blue, fg='white', width=7)
-pressure.place(x=250, y=487, height=15)
+pressure.place(x=249, y=487, height=15)
 
 # FORECAST WINDOW LABELS
 
