@@ -35,15 +35,6 @@ def format_date_short(date):
     return f'{date_object.day} {month_name[:3]}'
 
 
-def country_code(country_name):
-    """ Change full country name to its abbreviation """
-    with open('country_code.json') as file:
-        json_data = json.load(file)
-    for name in json_data:
-        if name['Name'] == country_name:
-            return name['Code']
-
-
 def mtr_sec_to_km_per_hour(ms):
     """ Convert units - m/s to km/h """
     return ms * (1 / 1000) / (1 / 3600)
