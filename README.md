@@ -4,7 +4,8 @@ This Python application utilizes the tkinter library for the graphical user inte
 
 The app consists of three main sections:
 
-1. **Search Bar**: Allows users to search for locations worldwide using city names, country names, or postcodes.
+1. **Search Bar**: Allows users to search for locations worldwide using city names, country names, or postcodes.   
+   - when empty, application will use current user location based on IP address.
 2. **Current Weather**: Displays the weather information for the present day.
 3. **3-Day Forecast**: Provides a forecast for the next three days.
 
@@ -14,7 +15,8 @@ To run this app, you need to have Python 3.x and PySimpleGUI installed. You also
 
 You can install the required modules via pip:
 
-`pip install requests`
+`pip install requests`   
+`pip install geocoders`
 
 Alternatively run this command for automatic module installation:
 
@@ -26,9 +28,11 @@ To run the app, open a terminal in the folder containing the code file, and type
 
 `python world-weather.py`
 
-This should open the app window. You can enter a location (e.g., "London" or "BH6 5PL) in the input field, and click the "Search" button (or press Enter) to update the weather information.
+This should open the app window.    
 
-Current weather window is pretty much self-explanatory.
+Enter a location manually (e.g., "London" or "BH6 5PL) and click the "Search" button (or press Enter) to update the weather information.   
+NOTE: User location will be used (based on IP address) if location field left empty.
+
 The icons in the bottom row represent the following:
    - "Feels like" temperature
    - Wind speed
