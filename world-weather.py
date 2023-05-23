@@ -46,7 +46,7 @@ def mtr_sec_to_km_per_hour(ms):
 
 def get_weather():
     """ Connect to API, get data and update tkinter labels """
-    api_key = 'ed07a221aca64f6eac4cc216b5343a77'
+    api_key = ''
     location = textfield.get()
     if location == "":
         location = get_current_location()
