@@ -38,6 +38,46 @@ icons_day = {
  900: 'img/weather_day/Sunny.png'
 }
 
+icons_night = {
+ 602: 'img/weather_night/HeavySnowSwrsNight.png',
+ 201: 'img/weather_night/PartCloudRainThunderNight.png',
+ 202: 'img/weather_night/PartCloudRainThunderNight.png',
+ 232: 'img/weather_night/PartCloudRainThunderNight.png',
+ 233: 'img/weather_night/PartCloudSleetSnowThunderNight.png',
+ 803: 'img/weather_night/PartlyCloudyNight.png',
+ 741: 'img/weather_day/Fog.png',
+ 731: 'img/weather_day/Fog.png',
+ 751: 'img/weather_night/IsoSleetSwrsNight.png',
+ 610: 'img/weather_night/ModSnowSwrsNight.png',
+ 502: 'img/weather_night/HeavyRainSwrsNight.png',
+ 612: 'img/weather_night/HeavySleetSwrsNight.png',
+ 622: 'img/weather_night/HeavySnowSwrsNight.png',
+ 302: 'img/weather_night/IsoRainSwrsNight.png',
+ 520: 'img/weather_night/IsoRainSwrsNight.png',
+ 522: 'img/weather_night/IsoRainSwrsNight.png',
+ 621: 'img/weather_night/IsoSnowSwrsNight.png',
+ 700: 'img/weather_day/Mist.png',
+ 711: 'img/weather_day/Mist.png',
+ 721: 'img/weather_day/Mist.png',
+ 501: 'img/weather_night/ModRainSwrsNight.png',
+ 521: 'img/weather_night/ModRainSwrsNight.png',
+ 601: 'img/weather_night/ModSnowSwrsNight.png',
+ 623: 'img/weather_night/ModSnowSwrsNight.png',
+ 500: 'img/weather_night/IsoRainSwrsNight.png',
+ 300: 'img/weather_night/IsoRainSwrsNight.png',
+ 301: 'img/weather_night/IsoRainSwrsNight.png',
+ 611: 'img/weather_night/IsoSleetSwrsNight.png',
+ 600: 'img/weather_night/IsoSnowSwrsNight.png' ,
+ 804: 'img/weather_day/Overcast.png',
+ 200: 'img/weather_night/PartCloudRainThunderNight.png',
+ 230: 'img/weather_night/PartCloudRainThunderNight.png',
+ 231: 'img/weather_night/PartCloudRainThunderNight.png',
+ 802: 'img/weather_night/PartlyCloudyNight.png',
+ 801: 'img/weather_night/PartlyCloudyNight.png',
+ 800: 'img/weather_night/Clear.png',
+ 900: 'img/weather_night/Clear.png'
+}
+
 icons_mini = {
  602: 'img/weather_mini/Blizzard.png',
  201: 'img/weather_mini/CloudRainThunder.png',

@@ -4,7 +4,7 @@ from tkinter import *
 import tkinter as tk
 import requests
 import calendar
-from weather_icons import icons_day, icons_mini
+from weather_icons import icons_day, icons_night, icons_mini
 
 
 def world_weather():
@@ -85,7 +85,7 @@ def world_weather():
             weather_icon.config(file=icons_day[code])
             weather_label.place(x=97, y=130)
         else:
-            weather_icon.config(file=icons_day[code])  # to update when night icons are made
+            weather_icon.config(file=icons_night[code])
             weather_label.place(x=97, y=130)
 
         temp.config(text=current_temp, justify='center', width=2)
