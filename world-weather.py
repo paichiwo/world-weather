@@ -56,7 +56,6 @@ def get_weather():
             current_data = requests.get(url).json()
             f_url = f'https://api.weatherbit.io/v2.0/forecast/daily?city={location}&key={api_key}&days=4'
             forecast_data = requests.get(f_url).json()
-            print(forecast_data)
         except requests.exceptions.JSONDecodeError:
             url = f'https://api.weatherbit.io/v2.0/current?postal_code={location}&key={api_key}'
             current_data = requests.get(url).json()
