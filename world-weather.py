@@ -43,31 +43,32 @@ def world_weather():
         return ms * (1 / 1000) / (1 / 3600)
 
     def get_user_location():
+        """ Get user city, country based on IP """
         ip_location = geocoder.ip('me')
         city = ip_location.city
         country = ip_location.country
         return f"{city}, {country}"
 
-    def get_current_weather(api_key, location):
+    def get_current_weather(key, location):
         try:
-            url = f'https://api.weatherbit.io/v2.0/current?city={location}&key={api_key}'
+            url = f'https://api.weatherbit.io/v2.0/current?city={location}&key={key}'
             current_data = requests.get(url).json()
         except requests.exceptions.JSONDecodeError:
-            url = f'https://api.weatherbit.io/v2.0/current?postal_code={location}&key={api_key}'
+            url = f'https://api.weatherbit.io/v2.0/current?postal_code={location}&key={key}'
             current_data = requests.get(url).json()
         return current_data
 
-    def get_forecast_weather(api_key, location):
+    def get_forecast_weather(key, location):
         try:
-            f_url = f'https://api.weatherbit.io/v2.0/forecast/daily?city={location}&key={api_key}&days=4'
+            f_url = f'https://api.weatherbit.io/v2.0/forecast/daily?city={location}&key={key}&days=4'
             forecast_data = requests.get(f_url).json()
         except requests.exceptions.JSONDecodeError:
-            f_url = f'https://api.weatherbit.io/v2.0/forecast/daily?postal_code={location}&key={api_key}&days=4'
+            f_url = f'https://api.weatherbit.io/v2.0/forecast/daily?postal_code={location}&key={key}&days=4'
             forecast_data = requests.get(f_url).json()
         return forecast_data
 
     def update_current_weather_main_window(current_data):
-
+        """ Get data from json and update relevant labels """
         # Main window data
         city = current_data['data'][0]['city_name']
         country = current_data['data'][0]['country_code']
@@ -101,7 +102,7 @@ def world_weather():
         date_info.config(text=local_time, justify='center')
 
     def update_current_weather_bottom_row(current_data):
-
+        """ Get data from json and update relevant labels """
         # Bottom row data
         current_feelslike = str(int(current_data['data'][0]['app_temp']))
         current_wind_speed = str(int(mtr_sec_to_km_per_hour(current_data['data'][0]['wind_spd'])))
@@ -118,7 +119,7 @@ def world_weather():
         textfield.delete(0, END)
 
     def create_forecast_data_list(forecast_data):
-
+        """ Extract data needed for the forecast window """
         forecast_data_list = []
 
         for forecast_days in forecast_data['data'][1:]:
@@ -136,7 +137,7 @@ def world_weather():
         return forecast_data_list
 
     def update_forecast_window(forecast_data_list):
-
+        """ Update relevant forecast labels """
         day_1_date.config(text=forecast_data_list[0][0], justify='center')
         day_1_temp.config(text=f'{forecast_data_list[0][1]}°', justify='center')
         day_1_humidity.config(text=f'{forecast_data_list[0][2]}%', justify='center')
@@ -157,12 +158,12 @@ def world_weather():
 
     def get_weather():
         """ Connect to API, get data and update tkinter labels """
-
+        # If textfield empty use user current location based on IP address
         if len(textfield.get()) > 0:
             location = textfield.get()
         else:
             location = get_user_location()
-
+        # Weather data flow
         try:
             current_data = get_current_weather(api_key, location)
             forecast_data = get_forecast_weather(api_key, location)
@@ -170,10 +171,10 @@ def world_weather():
             update_current_weather_main_window(current_data)
             update_current_weather_bottom_row(current_data)
             update_forecast_window(forecast_list)
-        except KeyError:
+        except (KeyError, requests.exceptions.JSONDecodeError):
             city_info.config(text='Enter correct location', fg='yellow', justify='center', width=22)
         except requests.exceptions.ConnectionError:
-            get_weather()
+            city_info.config(text='Connection problem')
 
     # Create Search box
     search_image = PhotoImage(file='img/current_window.png')
@@ -181,7 +182,7 @@ def world_weather():
     search_label.place(x=22, y=20)
     textfield = tk.Entry(root, cursor='hand2', justify='center', width=23, font=('Noto Sans', 11, 'bold'),
                          bg=d_blue, border=0, fg='white')
-    textfield.place(x=60, y=67, height=25)
+    textfield.place(x=62, y=67, height=25)
     textfield.focus()
     textfield.bind('<Return>', lambda event=None: search_button.invoke())
     search_icon = PhotoImage(file='img/magnifying_glass.png')
@@ -190,7 +191,6 @@ def world_weather():
     search_button.place(x=268, y=65)
 
     # Create Current Weather labels
-
     city_info = Label(text='Enter city name or postcode', font=('Noto Sans', 10), bg=l_blue, fg='white')
     city_info.place(x=90, y=97)
     weather_icon = PhotoImage(file='img/splash_icon.png')
