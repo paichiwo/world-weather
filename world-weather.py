@@ -1,5 +1,4 @@
 from datetime import datetime
-import urllib
 from tkinter import *
 import tkinter as tk
 import requests
