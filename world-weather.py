@@ -21,7 +21,7 @@ def world_weather():
     d_blue = '#1167f2'
 
     # https://weatherbit.io/ API KEY
-    api_key = 'ed07a221aca64f6eac4cc216b5343a77'
+    api_key = ''
 
     def format_date_long(date):
         """ Format date to weekday, day month_name (Monday, 14 May) """
