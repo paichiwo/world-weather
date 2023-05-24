@@ -16,7 +16,6 @@ To run this app, you need to have Python 3.x and PySimpleGUI installed. You also
 You can install the required modules via pip:
 
 `pip install requests`   
-`pip install geocoders`
 
 Alternatively run this command for automatic module installation:
 
