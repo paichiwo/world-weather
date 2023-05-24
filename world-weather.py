@@ -1,12 +1,12 @@
 from datetime import datetime
-import geocoder
 from tkinter import *
 import tkinter as tk
 import requests
 import calendar
 from weather_icons import icons_day, icons_night, icons_mini
 
-
+errors = {"API_404":'API key not valid, or not yet activated. If you recently signed up for an account or created this key, please allow up to 30 minutes for key to activate.'
+          }
 def world_weather():
 
     # Create the window and set the basics
@@ -42,12 +42,15 @@ def world_weather():
         """ Convert units - m/s to km/h """
         return ms * (1 / 1000) / (1 / 3600)
 
-    def get_user_location():
-        """ Get user city, country based on IP """
-        ip_location = geocoder.ip('me')
-        city = ip_location.city
-        country = ip_location.country
-        return f"{city}, {country}"
+    def get_user_location(link="https://ipinfo.io/city"):
+        try:
+            response = requests.get(link)
+            if response.status_code == 200:
+                return response.text.strip()
+            else:
+                return "Unable to fetch location data."
+        except requests.exceptions.RequestException as e:
+            return "An error occurred: " + str(e)
 
     def get_current_weather(key, location):
         try:
@@ -172,7 +175,10 @@ def world_weather():
             update_current_weather_bottom_row(current_data)
             update_forecast_window(forecast_list)
         except (KeyError, requests.exceptions.JSONDecodeError):
-            city_info.config(text='Enter correct location', fg='yellow', justify='center', width=22)
+            if current_data['error'] == errors["API_404"]:
+                city_info.config(text="Wrong or Blank API key", fg='yellow', justify='center', width=22)
+            else:
+                city_info.config(text='Enter correct location', fg='yellow', justify='center', width=22)
         except requests.exceptions.ConnectionError:
             city_info.config(text='Connection problem')
 
@@ -197,6 +203,7 @@ def world_weather():
     weather_icon_image = PhotoImage(file='img/splash_icon.png')
     weather_icon = Label(root, image=weather_icon_image, bg=l_blue)
     weather_icon.place(x=105, y=157)
+    Label(text='by paichiwo ', font=('Noto Sans', 8), bg=l_blue, fg='white').place(x=143, y=300)
     temp = Label(text='', font=('Noto Sans', 85, 'bold'), bg=l_blue, fg='white')
     temp.place(x=104, y=280, height=111)
     temp_symbol = Label(text='', font=('Noto Sans', 20, 'bold'), height=1, bg=l_blue, fg='white')
