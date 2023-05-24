@@ -7,6 +7,14 @@ import calendar
 from weather_icons import icons_day, icons_night, icons_mini
 
 
+def get_user_location(ip="me"):
+    """Get user city, country based on IP."""
+    ip_location = geocoder.ip(ip)
+    city = ip_location.city
+    country = ip_location.country
+    return f"{city}, {country}"
+
+
 def world_weather():
 
     # Create the window and set the basics
@@ -41,13 +49,6 @@ def world_weather():
     def mtr_sec_to_km_per_hour(ms):
         """ Convert units - m/s to km/h """
         return ms * (1 / 1000) / (1 / 3600)
-
-    def get_user_location():
-        """ Get user city, country based on IP """
-        ip_location = geocoder.ip('me')
-        city = ip_location.city
-        country = ip_location.country
-        return f"{city}, {country}"
 
     def get_current_weather(key, location):
         try:
