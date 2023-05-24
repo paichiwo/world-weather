@@ -18,7 +18,7 @@ api_key = ''
 
 
 def format_date_long(date):
-    """ Format date to weekday, day month_name (Monday, 14 May) """
+    """Format date to weekday, day month_name (Monday, 14 May)."""
     date_object = datetime.strptime(date, '%Y-%m-%d')
     week_day = calendar.day_name[date_object.weekday()]
     month = date_object.month
@@ -34,13 +34,13 @@ def format_date_short(date):
     return f'{date_object.day} {month_name[:3]}'
 
 
-def mtr_sec_to_km_per_hour(ms):
-    """ Convert units - m/s to km/h """
-    return ms * (1 / 1000) / (1 / 3600)
+def mtr_per_sec_to_km_per_hour(m_per_s):
+    """Convert units - m/s to km/h."""
+    return m_per_s * (1 / 1000) / (1 / 3600)
 
 
 def get_user_location(link="https://ipinfo.io/city"):
-    """ Find user location based on IP address"""
+    """Find user location based on IP address."""
     try:
         response = requests.get(link)
         if response.status_code == 200:
@@ -52,7 +52,7 @@ def get_user_location(link="https://ipinfo.io/city"):
 
 
 def world_weather():
-    """ Main function that creates window, and updates it with information from API """
+    """Main function that creates window, and updates it with information from the API."""
     # Create the window and set the basics
     root = Tk()
     root.title('World Weather by paichiwo')
@@ -61,7 +61,7 @@ def world_weather():
     root.config(bg='black')
 
     def get_response_code(key, location):
-        """ Find API response code for error handling """
+        """Find API response code for error handling."""
         url = f'https://api.weatherbit.io/v2.0/current?city={location}&key={key}'
         response_code = requests.get(url).status_code
         return response_code
@@ -85,7 +85,7 @@ def world_weather():
         return forecast_data
 
     def update_current_weather_main_window(current_data):
-        """ Get data from json and update relevant labels """
+        """Get data from json and update relevant labels."""
         # Main window data
         city = current_data['data'][0]['city_name']
         country = current_data['data'][0]['country_code']
@@ -120,10 +120,10 @@ def world_weather():
         date_info.config(text=local_time)
 
     def update_current_weather_bottom_row(current_data):
-        """ Get data from json and update relevant labels """
+        """Get data from json and update relevant labels."""
         # Bottom row data
         current_feelslike = str(int(current_data['data'][0]['app_temp']))
-        current_wind_speed = str(int(mtr_sec_to_km_per_hour(current_data['data'][0]['wind_spd'])))
+        current_wind_speed = str(int(mtr_per_sec_to_km_per_hour(current_data['data'][0]['wind_spd'])))
         current_humidity = current_data['data'][0]['rh']
         current_cloud_coverage = str(int(current_data['data'][0]['clouds']))
         current_pressure = str(int(current_data['data'][0]['slp']))
@@ -137,14 +137,14 @@ def world_weather():
         textfield.delete(0, END)
 
     def create_forecast_data_list(forecast_data):
-        """ Extract data needed for the forecast window """
+        """Extract data needed for the forecast window."""
         forecast_data_list = []
 
         for forecast_days in forecast_data['data'][1:]:
             forecast_date = format_date_short(forecast_days['datetime'])
             forecast_avg_temp = str(int(forecast_days['temp']))
             forecast_avg_humidity = str(int(forecast_days['rh']))
-            forecast_max_wind = str(int(mtr_sec_to_km_per_hour(forecast_days['wind_spd'])))
+            forecast_max_wind = str(int(mtr_per_sec_to_km_per_hour(forecast_days['wind_spd'])))
             forecast_code = forecast_days['weather']['code']
 
             forecast_data_list.append([forecast_date,
@@ -155,7 +155,7 @@ def world_weather():
         return forecast_data_list
 
     def update_forecast_window(forecast_data_list):
-        """ Update relevant forecast labels """
+        """Update relevant forecast labels."""
         day_1_date.config(text=forecast_data_list[0][0])
         day_1_temp.config(text=f'{forecast_data_list[0][1]}°')
         day_1_humidity.config(text=f'{forecast_data_list[0][2]}%')
@@ -175,7 +175,7 @@ def world_weather():
         day_3_icon.config(file=icons_mini[forecast_data_list[2][4]])
 
     def get_weather():
-        """ Connect to API, get data and update tkinter labels """
+        """Connect to API, get data and update tkinter labels."""
         # If textfield left empty use user current location based on IP address
         current_data = {}
         if len(textfield.get()) > 0:
