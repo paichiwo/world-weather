@@ -44,7 +44,9 @@ def get_user_location(link="https://ipinfo.io/city"):
     try:
         response = requests.get(link)
         if response.status_code == 200:
-            return response.text.strip()
+            city = response.text.strip()
+            country = requests.get(link[:-4]+'country').text.strip()
+            return f'{city}, {country}'
         else:
             return "Unable to fetch location data."
     except requests.exceptions.RequestException as e:
