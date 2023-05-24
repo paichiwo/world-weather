@@ -5,7 +5,7 @@ import requests
 import calendar
 from weather_icons import icons_day, icons_night, icons_mini
 
-errors = {"API_404":'API key not valid, or not yet activated. If you recently signed up for an account or created this key, please allow up to 30 minutes for key to activate.'
+errors = {"API_404":'API key not valid, or not yet activated. If you recently signed up for an account or created this key, please allow up to 30 minutes for key to activate.'}
 
 
 def get_user_location(link="https://ipinfo.io/city"):
