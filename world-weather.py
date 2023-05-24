@@ -5,10 +5,12 @@ import requests
 import calendar
 from weather_icons import icons_day, icons_night, icons_mini
 
-errors = {"API_404":'API key not valid, or not yet activated. If you recently signed up for an account or created this key, please allow up to 30 minutes for key to activate.'}
+errors = {"API_404": 'API key not valid, or not yet activated. If you recently signed up for an account or created '
+                     'this key, please allow up to 30 minutes for key to activate.'}
 
 
 def get_user_location(link="https://ipinfo.io/city"):
+    """ Find user location based on IP address"""
     try:
         response = requests.get(link)
         if response.status_code == 200:
@@ -163,7 +165,8 @@ def world_weather():
 
     def get_weather():
         """ Connect to API, get data and update tkinter labels """
-        # If textfield empty use user current location based on IP address
+        # If textfield left empty use user current location based on IP address
+        current_data = None
         if len(textfield.get()) > 0:
             location = textfield.get()
         else:
@@ -178,9 +181,11 @@ def world_weather():
             update_forecast_window(forecast_list)
         except (KeyError, requests.exceptions.JSONDecodeError):
             if current_data['error'] == errors["API_404"]:
-                city_info.config(text="Wrong or Blank API key", fg='yellow', justify='center', width=22)
+                city_info.config(text="Wrong or Blank API key", font=('Noto Sans', 9),
+                                 fg='yellow', justify='center', width=34)
             else:
-                city_info.config(text='Enter correct location', fg='yellow', justify='center', width=22)
+                city_info.config(text='Enter correct location', font=('Noto Sans', 9),
+                                 fg='yellow', justify='center', width=34)
         except requests.exceptions.ConnectionError:
             city_info.config(text='Connection problem')
 
@@ -200,7 +205,7 @@ def world_weather():
 
     # Create Current Weather labels
     city_info = Label(text='city, postcode or leave empty for your location',
-                      font=('Noto Sans', 8), bg=l_blue, fg='white')
+                      font=('Noto Sans', 8), justify='center', bg=l_blue, fg='white', width=34)
     city_info.place(x=52, y=97)
     weather_icon_image = PhotoImage(file='img/splash_icon.png')
     weather_icon = Label(root, image=weather_icon_image, bg=l_blue)
