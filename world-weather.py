@@ -6,7 +6,37 @@ import calendar
 from weather_icons import icons_day, icons_night, icons_mini
 
 errors = {"API_404": 'API key not valid, or not yet activated. If you recently signed up for an account or created '
-                     'this key, please allow up to 30 minutes for key to activate.'}
+                     'this key, please allow up to 30 minutes for key to activate.',
+          }
+
+# Colors
+l_blue = '#1581ef'
+d_blue = '#1167f2'
+
+# https://weatherbit.io/ API KEY
+api_key = ''
+
+
+def format_date_long(date):
+    """ Format date to weekday, day month_name (Monday, 14 May) """
+    date_object = datetime.strptime(date, '%Y-%m-%d')
+    week_day = calendar.day_name[date_object.weekday()]
+    month = date_object.month
+    month_name = calendar.month_name[month]
+    return f'{week_day[:3]}, {date_object.day} {month_name}'
+
+
+def format_date_short(date):
+    """ Format date to day month_name (14 May) """
+    date_object = datetime.strptime(date, '%Y-%m-%d')
+    month = date_object.month
+    month_name = calendar.month_name[month]
+    return f'{date_object.day} {month_name[:3]}'
+
+
+def mtr_sec_to_km_per_hour(ms):
+    """ Convert units - m/s to km/h """
+    return ms * (1 / 1000) / (1 / 3600)
 
 
 def get_user_location(link="https://ipinfo.io/city"):
@@ -22,7 +52,7 @@ def get_user_location(link="https://ipinfo.io/city"):
 
 
 def world_weather():
-
+    """ Main function that creates window, and updates it with information from API """
     # Create the window and set the basics
     root = Tk()
     root.title('World Weather by paichiwo')
@@ -30,31 +60,11 @@ def world_weather():
     root.resizable(False, False)
     root.config(bg='black')
 
-    # Colors
-    l_blue = '#1581ef'
-    d_blue = '#1167f2'
-
-    # https://weatherbit.io/ API KEY
-    api_key = ''
-
-    def format_date_long(date):
-        """ Format date to weekday, day month_name (Monday, 14 May) """
-        date_object = datetime.strptime(date, '%Y-%m-%d')
-        week_day = calendar.day_name[date_object.weekday()]
-        month = date_object.month
-        month_name = calendar.month_name[month]
-        return f'{week_day[:3]}, {date_object.day} {month_name}'
-
-    def format_date_short(date):
-        """ Format date to day month_name (14 May) """
-        date_object = datetime.strptime(date, '%Y-%m-%d')
-        month = date_object.month
-        month_name = calendar.month_name[month]
-        return f'{date_object.day} {month_name[:3]}'
-
-    def mtr_sec_to_km_per_hour(ms):
-        """ Convert units - m/s to km/h """
-        return ms * (1 / 1000) / (1 / 3600)
+    def get_response_code(key, location):
+        """ Find API response code for error handling """
+        url = f'https://api.weatherbit.io/v2.0/current?city={location}&key={key}'
+        response_code = requests.get(url).status_code
+        return response_code
 
     def get_current_weather(key, location):
         try:
@@ -86,7 +96,8 @@ def world_weather():
         current_day_or_night = current_data['data'][0]['pod']
 
         # Update the labels
-        city_info.config(text=f'{city}, {country}', fg='white', font=('Noto Sans', 12), justify='center', width=22)
+        paichiwo.destroy()
+        city_info.config(text=f'{city}, {country}', fg='white', font=('Noto Sans', 12), width=22)
         city_info.place(x=65, y=97)
 
         if current_day_or_night == 'd':
@@ -96,17 +107,17 @@ def world_weather():
             weather_icon_image.config(file=icons_night[code])
             weather_icon.place(x=97, y=130)
 
-        temp.config(text=current_temp, justify='center', width=2)
+        temp.config(text=current_temp)
 
         if len(current_temp) == 1:
-            temp_symbol.config(text='°', justify='center')
-            temp_symbol.place(x=205, y=290)
+            temp_symbol.config(text='°')
+            temp_symbol.place(x=205, y=308)
         else:
-            temp_symbol.config(text='°', justify='center')
-            temp_symbol.place(x=238, y=290)
+            temp_symbol.config(text='°')
+            temp_symbol.place(x=238, y=308)
 
-        condition.config(text=current_condition, justify='center')
-        date_info.config(text=local_time, justify='center')
+        condition.config(text=current_condition)
+        date_info.config(text=local_time)
 
     def update_current_weather_bottom_row(current_data):
         """ Get data from json and update relevant labels """
@@ -118,11 +129,11 @@ def world_weather():
         current_pressure = str(int(current_data['data'][0]['slp']))
 
         # Update the labels
-        feelslike.config(text=f'{current_feelslike}°', justify='center')
-        wind.config(text=f'{current_wind_speed} km/h', justify='center')
-        humidity.config(text=f'{current_humidity}%', justify='center')
-        cloud_coverage.config(text=f'{current_cloud_coverage}%', justify='center')  # change graphics !!!!!!
-        pressure.config(text=f'{current_pressure} hPa', justify='center')
+        feelslike.config(text=f'{current_feelslike}°')
+        wind.config(text=f'{current_wind_speed} km/h')
+        humidity.config(text=f'{current_humidity}%')
+        cloud_coverage.config(text=f'{current_cloud_coverage}%')
+        pressure.config(text=f'{current_pressure} hPa')
         textfield.delete(0, END)
 
     def create_forecast_data_list(forecast_data):
@@ -145,49 +156,54 @@ def world_weather():
 
     def update_forecast_window(forecast_data_list):
         """ Update relevant forecast labels """
-        day_1_date.config(text=forecast_data_list[0][0], justify='center')
-        day_1_temp.config(text=f'{forecast_data_list[0][1]}°', justify='center')
-        day_1_humidity.config(text=f'{forecast_data_list[0][2]}%', justify='center')
-        day_1_wind.config(text=f'{forecast_data_list[0][3]} km/h', justify='center')
+        day_1_date.config(text=forecast_data_list[0][0])
+        day_1_temp.config(text=f'{forecast_data_list[0][1]}°')
+        day_1_humidity.config(text=f'{forecast_data_list[0][2]}%')
+        day_1_wind.config(text=f'{forecast_data_list[0][3]} km/h')
         day_1_icon.config(file=icons_mini[forecast_data_list[0][4]])
 
-        day_2_date.config(text=forecast_data_list[1][0], justify='center')
-        day_2_temp.config(text=f'{forecast_data_list[1][1]}°', justify='center')
-        day_2_humidity.config(text=f'{forecast_data_list[1][2]}%', justify='center')
-        day_2_wind.config(text=f'{forecast_data_list[1][3]} km/h', justify='center')
+        day_2_date.config(text=forecast_data_list[1][0])
+        day_2_temp.config(text=f'{forecast_data_list[1][1]}°')
+        day_2_humidity.config(text=f'{forecast_data_list[1][2]}%')
+        day_2_wind.config(text=f'{forecast_data_list[1][3]} km/h')
         day_2_icon.config(file=icons_mini[forecast_data_list[1][4]])
 
-        day_3_date.config(text=forecast_data_list[2][0], justify='center')
-        day_3_temp.config(text=f'{forecast_data_list[2][1]}°', justify='center')
-        day_3_humidity.config(text=f'{forecast_data_list[2][2]}%', justify='center')
-        day_3_wind.config(text=f'{forecast_data_list[2][3]} km/h', justify='center')
+        day_3_date.config(text=forecast_data_list[2][0])
+        day_3_temp.config(text=f'{forecast_data_list[2][1]}°')
+        day_3_humidity.config(text=f'{forecast_data_list[2][2]}%')
+        day_3_wind.config(text=f'{forecast_data_list[2][3]} km/h')
         day_3_icon.config(file=icons_mini[forecast_data_list[2][4]])
 
     def get_weather():
         """ Connect to API, get data and update tkinter labels """
         # If textfield left empty use user current location based on IP address
-        current_data = None
+        current_data = {}
         if len(textfield.get()) > 0:
             location = textfield.get()
         else:
             location = get_user_location()
         # Weather data flow
-        try:
-            current_data = get_current_weather(api_key, location)
-            forecast_data = get_forecast_weather(api_key, location)
-            forecast_list = create_forecast_data_list(forecast_data)
-            update_current_weather_main_window(current_data)
-            update_current_weather_bottom_row(current_data)
-            update_forecast_window(forecast_list)
-        except (KeyError, requests.exceptions.JSONDecodeError):
-            if current_data['error'] == errors["API_404"]:
-                city_info.config(text="Wrong or Blank API key", font=('Noto Sans', 9),
-                                 fg='yellow', justify='center', width=34)
-            else:
-                city_info.config(text='Enter correct location', font=('Noto Sans', 9),
-                                 fg='yellow', justify='center', width=34)
-        except requests.exceptions.ConnectionError:
-            city_info.config(text='Connection problem')
+        response = get_response_code(api_key, location)
+        if response == 200:
+            try:
+                current_data = get_current_weather(api_key, location)
+                forecast_data = get_forecast_weather(api_key, location)
+                forecast_list = create_forecast_data_list(forecast_data)
+                update_current_weather_main_window(current_data)
+                update_current_weather_bottom_row(current_data)
+                update_forecast_window(forecast_list)
+
+            except (KeyError, requests.exceptions.JSONDecodeError):
+                if current_data['error'] == errors["API_404"]:
+                    city_info.config(text="Wrong or Blank API key", font=('Noto Sans', 9), fg='yellow')
+                else:
+                    city_info.config(text='Enter correct location', font=('Noto Sans', 9), fg='yellow')
+            except requests.exceptions.ConnectionError:
+                city_info.config(text='Connection problem')
+        elif response == 403:
+            city_info.config(text='ERROR 403: Forbidden access', font=('Noto Sans', 9), fg='yellow')
+        elif response == 429:
+            city_info.config(text='ERROR 429: Too many requests', font=('Noto Sans', 9), fg='yellow')
 
     # Create Search box
     search_image = PhotoImage(file='img/current_window.png')
@@ -206,63 +222,65 @@ def world_weather():
     # Create Current Weather labels
     city_info = Label(text='city, postcode or leave empty for your location',
                       font=('Noto Sans', 8), justify='center', bg=l_blue, fg='white', width=34)
-    city_info.place(x=52, y=97)
+    city_info.place(x=55, y=97)
     weather_icon_image = PhotoImage(file='img/splash_icon.png')
     weather_icon = Label(root, image=weather_icon_image, bg=l_blue)
     weather_icon.place(x=105, y=157)
-    Label(text='by paichiwo ', font=('Noto Sans', 8), bg=l_blue, fg='white').place(x=143, y=300)
-    temp = Label(text='', font=('Noto Sans', 85, 'bold'), bg=l_blue, fg='white')
-    temp.place(x=104, y=280, height=111)
-    temp_symbol = Label(text='', font=('Noto Sans', 20, 'bold'), height=1, bg=l_blue, fg='white')
-    temp_symbol.place(x=208, y=290, width=15)
-    condition = Label(text='', font=('Noto Sans', 11), bg=l_blue, fg='white', width=27)
-    condition.place(x=53, y=390, height=30)
-    date_info = Label(text='', font=('Noto Sans', 8), bg=l_blue, fg='white', width=30)
-    date_info.place(x=69, y=418, height=15)
 
-    feelslike = Label(text='', font=('Noto Sans', 8, 'bold'), bg=l_blue, fg='white', width=3)
+    temp = Label(text='', font=('Noto Sans', 85, 'bold'), justify='center', bg=l_blue, fg='white', width=2)
+    temp.place(x=104, y=280, height=111)
+    temp_symbol = Label(text='', font=('Noto Sans', 20, 'bold'), justify='center', bg=l_blue, fg='white', width=1)
+    temp_symbol.place(x=205, y=308, height=15)
+    condition = Label(text='', font=('Noto Sans', 11), justify='center', bg=l_blue, fg='white', width=27)
+    condition.place(x=53, y=390, height=30)
+    date_info = Label(text='', font=('Noto Sans', 8), justify='center', bg=l_blue, fg='white', width=30)
+    date_info.place(x=69, y=418, height=15)
+    paichiwo = Label(text='by paichiwo ', font=('Noto Sans', 8), bg=l_blue, fg='white')
+    paichiwo.place(x=143, y=300)
+
+    feelslike = Label(text='', font=('Noto Sans', 8, 'bold'), justify='center', bg=l_blue, fg='white', width=3)
     feelslike.place(x=63, y=487, height=15)
-    wind = Label(text='', font=('Noto Sans', 8, 'bold'), bg=l_blue, fg='white', width=7)
+    wind = Label(text='', font=('Noto Sans', 8, 'bold'), justify='center', bg=l_blue, fg='white', width=7)
     wind.place(x=100, y=487, height=15)
-    humidity = Label(text='', font=('Noto Sans', 8, 'bold'), bg=l_blue, fg='white', width=4)
+    humidity = Label(text='', font=('Noto Sans', 8, 'bold'), justify='center', bg=l_blue, fg='white', width=4)
     humidity.place(x=163, y=487, height=15)
-    cloud_coverage = Label(text='', font=('Noto Sans', 8, 'bold'), bg=l_blue, fg='white', width=5)
+    cloud_coverage = Label(text='', font=('Noto Sans', 8, 'bold'), justify='center', bg=l_blue, fg='white', width=5)
     cloud_coverage.place(x=206, y=487, height=15)
-    pressure = Label(text='', font=('Noto Sans', 8, 'bold'), bg=l_blue, fg='white', width=7)
+    pressure = Label(text='', font=('Noto Sans', 8, 'bold'), justify='center', bg=l_blue, fg='white', width=7)
     pressure.place(x=249, y=487, height=15)
 
     # Create Forecast Weather labels
-    day_1_date = Label(text='', font=('Noto Sans', 9, 'bold'), bg='black', fg='white', width=10)
+    day_1_date = Label(text='', font=('Noto Sans', 9, 'bold'), justify='center', bg='black', fg='white', width=10)
     day_1_date.place(x=32, y=535, height=20)
-    day_1_temp = Label(text='', font=('Noto Sans', 8, 'bold'), bg='black', fg='white', width=10)
+    day_1_temp = Label(text='', font=('Noto Sans', 8, 'bold'), justify='center', bg='black', fg='white', width=10)
     day_1_temp.place(x=37, y=555, height=20)
-    day_1_humidity = Label(text='', font=('Noto Sans', 8, 'bold'), bg='black', fg='white', width=10)
+    day_1_humidity = Label(text='', font=('Noto Sans', 8, 'bold'), justify='center', bg='black', fg='white', width=10)
     day_1_humidity.place(x=37, y=575, height=20)
-    day_1_wind = Label(text='', font=('Noto Sans', 8, 'bold'), bg='black', fg='white', width=10)
+    day_1_wind = Label(text='', font=('Noto Sans', 8, 'bold'), justify='center', bg='black', fg='white', width=10)
     day_1_wind.place(x=37, y=595, height=20)
     day_1_icon = PhotoImage(file='img/dummy_mini.png')
     day_1_icon_label = Label(root, image=day_1_icon, bg='black')
     day_1_icon_label.place(x=53, y=618)
 
-    day_2_date = Label(text='', font=('Noto Sans', 9, 'bold'), bg='black', fg='white', width=10)
+    day_2_date = Label(text='', font=('Noto Sans', 9, 'bold'), justify='center', bg='black', fg='white', width=10)
     day_2_date.place(x=135, y=535, height=20)
-    day_2_temp = Label(text='', font=('Noto Sans', 8, 'bold'), bg='black', fg='white', width=10)
+    day_2_temp = Label(text='', font=('Noto Sans', 8, 'bold'), justify='center', bg='black', fg='white', width=10)
     day_2_temp.place(x=140, y=555, height=20)
-    day_2_humidity = Label(text='', font=('Noto Sans', 8, 'bold'), bg='black', fg='white', width=10)
+    day_2_humidity = Label(text='', font=('Noto Sans', 8, 'bold'), justify='center', bg='black', fg='white', width=10)
     day_2_humidity.place(x=140, y=575, height=20)
-    day_2_wind = Label(text='', font=('Noto Sans', 8, 'bold'), bg='black', fg='white', width=10)
+    day_2_wind = Label(text='', font=('Noto Sans', 8, 'bold'), justify='center', bg='black', fg='white', width=10)
     day_2_wind.place(x=140, y=595, height=20)
     day_2_icon = PhotoImage(file='img/dummy_mini.png')
     day_2_icon_label = Label(root, image=day_2_icon, bg='black')
     day_2_icon_label.place(x=156, y=618)
 
-    day_3_date = Label(text='', font=('Noto Sans', 9, 'bold'), bg='black', fg='white', width=10)
+    day_3_date = Label(text='', font=('Noto Sans', 9, 'bold'), justify='center', bg='black', fg='white', width=10)
     day_3_date.place(x=234, y=535, height=20)
-    day_3_temp = Label(text='', font=('Noto Sans', 8, 'bold'), bg='black', fg='white', width=10)
+    day_3_temp = Label(text='', font=('Noto Sans', 8, 'bold'), justify='center', bg='black', fg='white', width=10)
     day_3_temp.place(x=239, y=555, height=20)
-    day_3_humidity = Label(text='', font=('Noto Sans', 8, 'bold'), bg='black', fg='white', width=10)
+    day_3_humidity = Label(text='', font=('Noto Sans', 8, 'bold'), justify='center', bg='black', fg='white', width=10)
     day_3_humidity.place(x=239, y=575, height=20)
-    day_3_wind = Label(text='', font=('Noto Sans', 8, 'bold'), bg='black', fg='white', width=10)
+    day_3_wind = Label(text='', font=('Noto Sans', 8, 'bold'), justify='center', bg='black', fg='white', width=10)
     day_3_wind.place(x=239, y=595, height=20)
     day_3_icon = PhotoImage(file='img/dummy_mini.png')
     day_3_icon_label = Label(root, image=day_3_icon, bg='black')
