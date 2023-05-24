@@ -83,11 +83,11 @@ def world_weather():
         city_info.place(x=65, y=97)
 
         if current_day_or_night == 'd':
-            weather_icon.config(file=icons_day[code])
-            weather_label.place(x=97, y=130)
+            weather_icon_image.config(file=icons_day[code])
+            weather_icon.place(x=97, y=130)
         else:
-            weather_icon.config(file=icons_night[code])
-            weather_label.place(x=97, y=130)
+            weather_icon_image.config(file=icons_night[code])
+            weather_icon.place(x=97, y=130)
 
         temp.config(text=current_temp, justify='center', width=2)
 
@@ -191,11 +191,12 @@ def world_weather():
     search_button.place(x=268, y=65)
 
     # Create Current Weather labels
-    city_info = Label(text='Enter city name or postcode', font=('Noto Sans', 10), bg=l_blue, fg='white')
-    city_info.place(x=90, y=97)
-    weather_icon = PhotoImage(file='img/splash_icon.png')
-    weather_label = Label(root, image=weather_icon, bg=l_blue)
-    weather_label.place(x=105, y=157)
+    city_info = Label(text='Enter city, postcode or leave\nempty to use your location',
+                      font=('Noto Sans', 10), bg=l_blue, fg='white')
+    city_info.place(x=88, y=97)
+    weather_icon_image = PhotoImage(file='img/splash_icon.png')
+    weather_icon = Label(root, image=weather_icon_image, bg=l_blue)
+    weather_icon.place(x=105, y=157)
     temp = Label(text='', font=('Noto Sans', 85, 'bold'), bg=l_blue, fg='white')
     temp.place(x=104, y=280, height=111)
     temp_symbol = Label(text='', font=('Noto Sans', 20, 'bold'), height=1, bg=l_blue, fg='white')
