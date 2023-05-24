@@ -5,8 +5,20 @@ import requests
 import calendar
 from weather_icons import icons_day, icons_night, icons_mini
 
-errors = {"API_404":'API key not valid, or not yet activated. If you recently signed up for an account or created this key, please allow up to 30 minutes for key to activate.'
-          }
+errors = {"API_404":'API key not valid, or not yet activated. If you recently signed up for an account or created this key, please allow up to 30 minutes for key to activate.'}
+
+
+def get_user_location(link="https://ipinfo.io/city"):
+    try:
+        response = requests.get(link)
+        if response.status_code == 200:
+            return response.text.strip()
+        else:
+            return "Unable to fetch location data."
+    except requests.exceptions.RequestException as e:
+        return "An error occurred: " + str(e)
+
+
 def world_weather():
 
     # Create the window and set the basics
@@ -41,16 +53,6 @@ def world_weather():
     def mtr_sec_to_km_per_hour(ms):
         """ Convert units - m/s to km/h """
         return ms * (1 / 1000) / (1 / 3600)
-
-    def get_user_location(link="https://ipinfo.io/city"):
-        try:
-            response = requests.get(link)
-            if response.status_code == 200:
-                return response.text.strip()
-            else:
-                return "Unable to fetch location data."
-        except requests.exceptions.RequestException as e:
-            return "An error occurred: " + str(e)
 
     def get_current_weather(key, location):
         try:
@@ -197,9 +199,9 @@ def world_weather():
     search_button.place(x=268, y=65)
 
     # Create Current Weather labels
-    city_info = Label(text='Enter city, postcode or leave\nempty to use your location',
-                      font=('Noto Sans', 10), bg=l_blue, fg='white')
-    city_info.place(x=88, y=97)
+    city_info = Label(text='city, postcode or leave empty for your location',
+                      font=('Noto Sans', 8), bg=l_blue, fg='white')
+    city_info.place(x=52, y=97)
     weather_icon_image = PhotoImage(file='img/splash_icon.png')
     weather_icon = Label(root, image=weather_icon_image, bg=l_blue)
     weather_icon.place(x=105, y=157)
@@ -207,7 +209,7 @@ def world_weather():
     temp = Label(text='', font=('Noto Sans', 85, 'bold'), bg=l_blue, fg='white')
     temp.place(x=104, y=280, height=111)
     temp_symbol = Label(text='', font=('Noto Sans', 20, 'bold'), height=1, bg=l_blue, fg='white')
-    temp_symbol.place(x=206, y=290, width=15)
+    temp_symbol.place(x=208, y=290, width=15)
     condition = Label(text='', font=('Noto Sans', 11), bg=l_blue, fg='white', width=27)
     condition.place(x=53, y=390, height=30)
     date_info = Label(text='', font=('Noto Sans', 8), bg=l_blue, fg='white', width=30)
