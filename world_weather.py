@@ -14,7 +14,7 @@ l_blue = '#1581ef'
 d_blue = '#1167f2'
 
 # https://weatherbit.io/ API KEY
-api_key = 'bfd79540de874cedbed1d3b2aa46d85a'
+api_key = ''
 
 
 def format_date_long(date):
