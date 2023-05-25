@@ -1,5 +1,4 @@
 black
-geocoder
 isort
 pytest
 requests
