@@ -1,2 +1,6 @@
-requests
+black
 geocoder
+isort
+pytest
+requests
+ruff
