@@ -14,6 +14,10 @@ l_blue = '#1581ef'
 d_blue = '#1167f2'
 
 
+# https://weatherbit.io/ API KEY
+api_key = ''
+
+
 def read_api_key():
     with open("api_key.txt") as f:
         return f.read()
