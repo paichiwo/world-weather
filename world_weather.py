@@ -17,9 +17,12 @@ d_blue = '#1167f2'
 # https://weatherbit.io/ API KEY
 api_key = ''
 
+
 def read_api_key():
     with open("api_key.txt") as f:
         return f.read()
+
+
 def format_date_long(date):
     """Format date to weekday, day month_name (Monday, 14 May)."""
     date_object = datetime.strptime(date, '%Y-%m-%d')
@@ -180,7 +183,7 @@ def world_weather():
         day_3_icon.config(file=icons_mini[forecast_data_list[2][4]])
 
     def get_weather():
-        global api_key #maybe later we should consider classes?
+        global api_key  # maybe later we should consider classes?
         """Connect to API, get data and update tkinter labels."""
         # If textfield left empty use user current location based on IP address
         current_data = {}
@@ -188,8 +191,8 @@ def world_weather():
             location = textfield.get()
         else:
             location = get_user_location()
-        if not api_key.strip():#just in case...
-            api_key = read_api_key()# better access
+        if not api_key.strip():  # just in case...
+            api_key = read_api_key()  # better access
         # Weather data flow
         response = get_response_code(api_key, location)
         if response == 200:
