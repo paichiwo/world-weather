@@ -222,9 +222,9 @@ def world_weather():
     search_button.place(x=268, y=65)
 
     # Create Current Weather labels
-    city_info = Label(text='city, postcode or leave empty for your location',
+    city_info = Label(text='enter city, postcode or leave empty\n to use your location',
                       font=('Noto Sans', 8), justify='center', bg=l_blue, fg='white', width=34)
-    city_info.place(x=55, y=97)
+    city_info.place(x=70, y=97)
     weather_icon_image = PhotoImage(file='img/splash_icon.png')
     weather_icon = Label(root, image=weather_icon_image, bg=l_blue)
     weather_icon.place(x=105, y=157)
