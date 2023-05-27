@@ -5,7 +5,7 @@ This Python application utilizes the tkinter library for the graphical user inte
 The app consists of three main sections:
 
 1. **Search Bar**: Allows users to search for locations worldwide using city names, country names, or postcodes.   
-   - when empty, application will use current user location based on IP address.
+   - when empty, the application will use the current user location based on IP address.
 2. **Current Weather**: Displays the weather information for the present day.
 3. **3-Day Forecast**: Provides a forecast for the next three days.
 
@@ -21,9 +21,11 @@ You can install the required modules via pip:
 - `pip install pytest`
 - `pip install ruff`
 
-Alternatively run this command for automatic module installation:
+Alternatively, run this command for automatic module installation:
 
 `pip install -r requirements.txt`
+
+#### For the best experience, please install fonts from `NotoSans fonts` from the `fonts` folder.
 
 ## **How to Run**
 
