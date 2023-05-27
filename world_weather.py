@@ -106,7 +106,7 @@ def world_weather():
         # Update the labels
         paichiwo.destroy()
         city_info.config(text=f'{city}, {country}', fg='white', font=('Noto Sans', 12), width=22)
-        city_info.place(x=65, y=97)
+        city_info.place(x=64, y=97)
 
         if current_day_or_night == 'd':
             weather_icon_image.config(file=icons_day[code])
@@ -232,7 +232,7 @@ def world_weather():
 
     # Create Current Weather labels
     city_info = Label(text='enter city, postcode or leave empty\n to use your location',
-                      font=('Noto Sans', 8), justify='center', bg=l_blue, fg='white', width=34)
+                      font=('Noto Sans', 8), justify='center', bg=d_blue, fg='white', width=34)
     city_info.place(x=55, y=97)
     weather_icon_image = PhotoImage(file='img/splash_icon.png')
     weather_icon = Label(root, image=weather_icon_image, bg=l_blue)
@@ -245,7 +245,7 @@ def world_weather():
     condition = Label(text='', font=('Noto Sans', 11), justify='center', bg=l_blue, fg='white', width=27)
     condition.place(x=53, y=390, height=30)
     date_info = Label(text='', font=('Noto Sans', 8), justify='center', bg=l_blue, fg='white', width=30)
-    date_info.place(x=84, y=418, height=15)
+    date_info.place(x=70, y=418, height=15)
     paichiwo = Label(text='by paichiwo ', font=('Noto Sans', 8), bg=l_blue, fg='white')
     paichiwo.place(x=143, y=300)
 
