@@ -17,12 +17,9 @@ d_blue = '#1167f2'
 # https://weatherbit.io/ API KEY
 api_key = ''
 
-
 def read_api_key():
     with open("api_key.txt") as f:
         return f.read()
-
-
 def format_date_long(date):
     """Format date to weekday, day month_name (Monday, 14 May)."""
     date_object = datetime.strptime(date, '%Y-%m-%d')
@@ -183,7 +180,7 @@ def world_weather():
         day_3_icon.config(file=icons_mini[forecast_data_list[2][4]])
 
     def get_weather():
-        global api_key  # maybe later we should consider classes?
+        global api_key #maybe later we should consider classes?
         """Connect to API, get data and update tkinter labels."""
         # If textfield left empty use user current location based on IP address
         current_data = {}
@@ -191,8 +188,8 @@ def world_weather():
             location = textfield.get()
         else:
             location = get_user_location()
-        if not api_key.strip():  # just in case...
-            api_key = read_api_key()  # better access
+        if not api_key.strip():#just in case...
+            api_key = read_api_key()# better access
         # Weather data flow
         response = get_response_code(api_key, location)
         if response == 200:
@@ -206,15 +203,15 @@ def world_weather():
 
             except (KeyError, requests.exceptions.JSONDecodeError):
                 if current_data['error'] == errors["API_404"]:
-                    city_info.config(text="Wrong or Blank API key", font=('Noto Sans', 9), fg='yellow')
+                    city_info.config(text="Wrong or Blank API key", font=('Noto Sans', 8), fg='yellow')
                 else:
-                    city_info.config(text='Enter correct location', font=('Noto Sans', 9), fg='yellow')
+                    city_info.config(text='Enter correct location', font=('Noto Sans', 8), fg='yellow')
             except requests.exceptions.ConnectionError:
                 city_info.config(text='Connection problem')
         elif response == 403:
-            city_info.config(text='ERROR 403: Forbidden access', font=('Noto Sans', 9), fg='yellow')
+            city_info.config(text='ERROR 403: Forbidden access', font=('Noto Sans', 8), fg='yellow')
         elif response == 429:
-            city_info.config(text='ERROR 429: Too many requests', font=('Noto Sans', 9), fg='yellow')
+            city_info.config(text='ERROR 429: Too many requests', font=('Noto Sans', 8), fg='yellow')
 
     # Create Search box
     search_image = PhotoImage(file='img/current_window.png')
@@ -233,15 +230,15 @@ def world_weather():
     # Create Current Weather labels
     city_info = Label(text='enter city, postcode or leave empty\n to use your location',
                       font=('Noto Sans', 8), justify='center', bg=l_blue, fg='white', width=34)
-    city_info.place(x=55, y=97)
+    city_info.place(x=70, y=97)
     weather_icon_image = PhotoImage(file='img/splash_icon.png')
     weather_icon = Label(root, image=weather_icon_image, bg=l_blue)
     weather_icon.place(x=105, y=157)
 
     temp = Label(text='', font=('Noto Sans', 85, 'bold'), justify='center', bg=l_blue, fg='white', width=2)
     temp.place(x=104, y=280, height=111)
-    temp_symbol = Label(text='', font=('Noto Sans', 20, 'bold'), justify='center', bg=l_blue, fg='white', width=1)
-    temp_symbol.place(x=205, y=308, height=15)
+    temp_symbol = Label(text='', font=('Noto Sans', 30, 'bold'), justify='center', fg='white', bg=l_blue, width=1)
+    temp_symbol.place(x=205, y=308, height=30)
     condition = Label(text='', font=('Noto Sans', 11), justify='center', bg=l_blue, fg='white', width=27)
     condition.place(x=53, y=390, height=30)
     date_info = Label(text='', font=('Noto Sans', 8), justify='center', bg=l_blue, fg='white', width=30)
