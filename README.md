@@ -25,7 +25,7 @@ Alternatively, run this command for automatic module installation:
 
 `pip install -r requirements.txt`
 
-#### For the best experience, please install fonts from `NotoSans fonts` from the `fonts` folder.
+#### For the best experience, please install `NotoSans fonts` from the `fonts` folder.
 
 ## **How to Run**
 
