@@ -1,5 +1,5 @@
 from datetime import datetime
-from tkinter import *
+from tkinter import Button, Label, PhotoImage, Tk, END
 import tkinter as tk
 import requests
 import calendar
@@ -94,14 +94,15 @@ def world_weather():
 
     def update_current_weather_main_window(current_data):
         """Get data from json and update relevant labels."""
+        current = current_data['data'][0]
         # Main window data
-        city = current_data['data'][0]['city_name']
-        country = current_data['data'][0]['country_code']
-        code = current_data['data'][0]['weather']['code']
-        current_temp = str(int(current_data['data'][0]['temp']))
-        current_condition = current_data['data'][0]['weather']['description']
-        local_time = format_date_long(current_data['data'][0]['datetime'][:-3])
-        current_day_or_night = current_data['data'][0]['pod']
+        city = current['city_name']
+        country = current['country_code']
+        code = current['weather']['code']
+        current_temp = f"{(int(current['temp']))}"
+        current_condition = current['weather']['description']
+        local_time = format_date_long(current['datetime'][:-3])
+        current_day_or_night = current['pod']
 
         # Update the labels
         paichiwo.destroy()
@@ -129,12 +130,13 @@ def world_weather():
 
     def update_current_weather_bottom_row(current_data):
         """Get data from json and update relevant labels."""
+        current = current_data['data'][0]
         # Bottom row data
-        current_feelslike = str(int(current_data['data'][0]['app_temp']))
-        current_wind_speed = str(int(mtr_per_sec_to_km_per_hour(current_data['data'][0]['wind_spd'])))
-        current_humidity = current_data['data'][0]['rh']
-        current_cloud_coverage = str(int(current_data['data'][0]['clouds']))
-        current_pressure = str(int(current_data['data'][0]['slp']))
+        current_feelslike = f"{(int(current['app_temp']))}"
+        current_wind_speed = f"{(int(mtr_per_sec_to_km_per_hour(current['wind_spd'])))}"
+        current_humidity = current['rh']
+        current_cloud_coverage = f"{(int(current['clouds']))}"
+        current_pressure = f"{(int(current['slp']))}"
 
         # Update the labels
         feelslike.config(text=f'{current_feelslike}°')
@@ -150,9 +152,9 @@ def world_weather():
 
         for forecast_days in forecast_data['data'][1:]:
             forecast_date = format_date_short(forecast_days['datetime'])
-            forecast_avg_temp = str(int(forecast_days['temp']))
-            forecast_avg_humidity = str(int(forecast_days['rh']))
-            forecast_max_wind = str(int(mtr_per_sec_to_km_per_hour(forecast_days['wind_spd'])))
+            forecast_avg_temp = f"{(int(forecast_days['temp']))}"
+            forecast_avg_humidity = f"{(int(forecast_days['rh']))}"
+            forecast_max_wind = f"{(int(mtr_per_sec_to_km_per_hour(forecast_days['wind_spd'])))}"
             forecast_code = forecast_days['weather']['code']
 
             forecast_data_list.append([forecast_date,
@@ -163,24 +165,28 @@ def world_weather():
         return forecast_data_list
 
     def update_forecast_window(forecast_data_list):
+        day_1 = forecast_data_list[0]
+        day_2 = forecast_data_list[1]
+        day_3 = forecast_data_list[2]
+
         """Update relevant forecast labels."""
-        day_1_date.config(text=forecast_data_list[0][0])
-        day_1_temp.config(text=f'{forecast_data_list[0][1]}°')
-        day_1_humidity.config(text=f'{forecast_data_list[0][2]}%')
-        day_1_wind.config(text=f'{forecast_data_list[0][3]} km/h')
-        day_1_icon.config(file=icons_mini[forecast_data_list[0][4]])
+        day_1_date.config(text=day_1[0])
+        day_1_temp.config(text=f'{day_1[1]}°')
+        day_1_humidity.config(text=f'{day_1[2]}%')
+        day_1_wind.config(text=f'{day_1[3]} km/h')
+        day_1_icon.config(file=icons_mini[day_1[4]])
 
-        day_2_date.config(text=forecast_data_list[1][0])
-        day_2_temp.config(text=f'{forecast_data_list[1][1]}°')
-        day_2_humidity.config(text=f'{forecast_data_list[1][2]}%')
-        day_2_wind.config(text=f'{forecast_data_list[1][3]} km/h')
-        day_2_icon.config(file=icons_mini[forecast_data_list[1][4]])
+        day_2_date.config(text=day_2[0])
+        day_2_temp.config(text=f'{day_2[1]}°')
+        day_2_humidity.config(text=f'{day_2[2]}%')
+        day_2_wind.config(text=f'{day_2[3]} km/h')
+        day_2_icon.config(file=icons_mini[day_2[4]])
 
-        day_3_date.config(text=forecast_data_list[2][0])
-        day_3_temp.config(text=f'{forecast_data_list[2][1]}°')
-        day_3_humidity.config(text=f'{forecast_data_list[2][2]}%')
-        day_3_wind.config(text=f'{forecast_data_list[2][3]} km/h')
-        day_3_icon.config(file=icons_mini[forecast_data_list[2][4]])
+        day_3_date.config(text=day_3[0])
+        day_3_temp.config(text=f'{day_3[1]}°')
+        day_3_humidity.config(text=f'{day_3[2]}%')
+        day_3_wind.config(text=f'{day_3[3]} km/h')
+        day_3_icon.config(file=icons_mini[day_3[4]])
 
     def get_weather():
         global api_key  # maybe later we should consider classes?
@@ -216,7 +222,7 @@ def world_weather():
         elif response == 429:
             city_info.config(text='ERROR 429: Too many requests', font=('Noto Sans', 9), fg='yellow')
 
-    # Create Search box
+    # Search box
     search_image = PhotoImage(file='img/current_window.png')
     search_label = Label(image=search_image, bg='black')
     search_label.place(x=22, y=20)
@@ -232,7 +238,7 @@ def world_weather():
 
     # Create Current Weather labels
     city_info = Label(text='enter city, postcode or leave empty\n to use your location',
-                      font=('Noto Sans', 8), justify='center', bg=d_blue, fg='white', width=34)
+                      font=('Noto Sans', 8), justify='center', bg=l_blue, fg='white', width=34)
     city_info.place(x=55, y=97)
     weather_icon_image = PhotoImage(file='img/splash_icon.png')
     weather_icon = Label(root, image=weather_icon_image, bg=l_blue)
