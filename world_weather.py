@@ -216,7 +216,7 @@ def world_weather():
                 else:
                     city_info.config(text='Enter correct location', font=('Noto Sans', 9), fg='yellow')
             except requests.exceptions.ConnectionError:
-                city_info.config(text='Connection problem')
+                world_weather()
         elif response == 403:
             city_info.config(text='ERROR 403: Forbidden access', font=('Noto Sans', 9), fg='yellow')
         elif response == 429:
@@ -225,16 +225,16 @@ def world_weather():
     # Search box
     search_image = PhotoImage(file='img/current_window.png')
     search_label = Label(image=search_image, bg='black')
-    search_label.place(x=22, y=20)
+    search_label.place(x=20, y=20)
     textfield = tk.Entry(root, cursor='hand2', justify='center', width=23, font=('Noto Sans', 11, 'bold'),
                          bg=d_blue, border=0, fg='white')
     textfield.place(x=62, y=67, height=25)
     textfield.focus()
     textfield.bind('<Return>', lambda event=None: search_button.invoke())
     search_icon = PhotoImage(file='img/magnifying_glass.png')
-    search_button = Button(image=search_icon, activebackground=l_blue, borderwidth=0,
+    search_button = Button(image=search_icon, activebackground=d_blue, borderwidth=0,
                            bg=d_blue, command=get_weather)
-    search_button.place(x=268, y=65)
+    search_button.place(x=265, y=65)
 
     # Create Current Weather labels
     city_info = Label(text='enter city, postcode or leave empty\n to use your location',
