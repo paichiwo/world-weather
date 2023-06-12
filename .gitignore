@@ -4,3 +4,4 @@ __pycache__/
 venv/
 # Project files
 /api_key.txt
+graphics/
